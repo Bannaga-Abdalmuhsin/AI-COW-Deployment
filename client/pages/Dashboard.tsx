@@ -359,20 +359,20 @@ export default function Dashboard() {
 
                     <div className="grid grid-cols-3 gap-3 mb-3 pb-3 border-b border-stc-purple/10">
                       <div>
-                        <p className="text-xs text-slate-400">Distance</p>
-                        <p className="text-sm font-semibold text-white">
+                        <p className="text-xs text-gray-600">Distance</p>
+                        <p className="text-sm font-semibold text-stc-purple-dark">
                           {site.distance_km} km
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-400">Tech</p>
-                        <p className="text-sm font-semibold text-white">
+                        <p className="text-xs text-gray-600">Tech</p>
+                        <p className="text-sm font-semibold text-stc-purple-dark">
                           {site.tech}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-400">Vendor</p>
-                        <p className="text-sm font-semibold text-white">
+                        <p className="text-xs text-gray-600">Vendor</p>
+                        <p className="text-sm font-semibold text-stc-purple-dark">
                           {site.vendor}
                         </p>
                       </div>
@@ -394,36 +394,36 @@ export default function Dashboard() {
           {/* Analytics Tab */}
           <TabsContent value="analytics" className="space-y-4">
             <div className="grid md:grid-cols-3 gap-4 mb-4">
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white border-stc-purple/10 shadow-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-slate-400 text-sm">Avg Demand</p>
-                      <p className="text-3xl font-bold text-white">82.5%</p>
+                      <p className="text-gray-600 text-sm">Avg Demand</p>
+                      <p className="text-3xl font-bold text-stc-purple-dark">82.5%</p>
                     </div>
-                    <BarChart3 className="w-8 h-8 text-blue-400" />
+                    <BarChart3 className="w-8 h-8 text-stc-purple" />
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white border-stc-purple/10 shadow-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-slate-400 text-sm">Success Rate</p>
-                      <p className="text-3xl font-bold text-white">87.0%</p>
+                      <p className="text-gray-600 text-sm">Success Rate</p>
+                      <p className="text-3xl font-bold text-stc-purple-dark">87.0%</p>
                     </div>
-                    <TrendingUp className="w-8 h-8 text-green-400" />
+                    <TrendingUp className="w-8 h-8 text-success" />
                   </div>
                 </CardContent>
               </Card>
-              <Card className="bg-slate-800/50 border-slate-700">
+              <Card className="bg-white border-stc-purple/10 shadow-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-slate-400 text-sm">Avg Setup Time</p>
-                      <p className="text-3xl font-bold text-white">25.7 hrs</p>
+                      <p className="text-gray-600 text-sm">Avg Setup Time</p>
+                      <p className="text-3xl font-bold text-stc-purple-dark">25.7 hrs</p>
                     </div>
-                    <Zap className="w-8 h-8 text-purple-400" />
+                    <Zap className="w-8 h-8 text-stc-purple" />
                   </div>
                 </CardContent>
               </Card>
