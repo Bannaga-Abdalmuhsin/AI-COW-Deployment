@@ -142,25 +142,24 @@ export default function DataManagement() {
           ))}
         </div>
 
-        {/* Training Guide */}
+        {/* Future ML Training Guide */}
         <Card className="bg-white border-stc-purple/10 mt-8 shadow-sm">
           <CardHeader>
             <CardTitle className="text-stc-purple-dark">
-              ML Model Training
+              ML Model Training (Future)
             </CardTitle>
             <CardDescription className="text-gray-600">
-              After uploading all datasets, trigger the training workflow
+              Upload Movement Archive historical data to enable ML model training
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="border-l-4 border-stc-purple pl-4">
                 <h4 className="font-semibold text-stc-purple-dark mb-1">
-                  Step 1: Data Validation
+                  Step 1: Upload Movement Archive
                 </h4>
                 <p className="text-gray-600 text-sm">
-                  System validates all uploaded tables for completeness and
-                  consistency
+                  Historical deployment records with success flags, dates, and technical specifications
                 </p>
               </div>
               <div className="border-l-4 border-stc-purple pl-4">
@@ -183,10 +182,10 @@ export default function DataManagement() {
               </div>
             </div>
             <Button
-              className="mt-6 bg-success hover:bg-success/90 text-white w-full"
+              className="mt-6 bg-stc-purple hover:bg-stc-purple/90 text-white w-full"
               disabled
             >
-              Start Training (Upload data first)
+              Start Training (Upload Movement Archive first)
             </Button>
           </CardContent>
         </Card>
