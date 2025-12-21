@@ -239,12 +239,12 @@ export default function Dashboard() {
 
         {/* Main Tabs */}
         <Tabs defaultValue="demand" className="space-y-4">
-          <TabsList className="bg-slate-800 border-slate-700">
-            <TabsTrigger value="demand" className="text-slate-300">
+          <TabsList className="bg-white border-stc-purple/10">
+            <TabsTrigger value="demand" className="text-gray-600 data-[state=active]:text-stc-purple">
               <BarChart3 className="w-4 h-4 mr-2" />
               Demand Prediction
             </TabsTrigger>
-            <TabsTrigger value="sites" className="text-slate-300">
+            <TabsTrigger value="sites" className="text-gray-600 data-[state=active]:text-stc-purple">
               <MapPin className="w-4 h-4 mr-2" />
               Site Recommendations
             </TabsTrigger>
