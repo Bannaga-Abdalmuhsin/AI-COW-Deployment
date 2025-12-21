@@ -141,43 +141,22 @@ export default function Dashboard() {
     }));
   };
 
-  const handlePredictDemand = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/predict_demand", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          region: selectedRegion,
-          event_type: selectedEventType,
-          month: new Date().getMonth() + 1,
-        }),
-      });
-      const data = await response.json();
-      setDemandData([data]);
-    } catch (error) {
-      console.error("Error predicting demand:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const filteredCOWData = mockCOWData.filter((cow) => {
+    const regionMatch =
+      selectedRegion === "KSA" || cow.region === selectedRegion;
+    const vendorMatch = selectedVendor === "All" || cow.vendor === selectedVendor;
+    return regionMatch && vendorMatch;
+  });
 
-  const handleGetRecommendations = async () => {
+  const uniqueVendors = [...new Set(mockCOWData.map((cow) => cow.vendor))];
+
+  const handleLoadData = async () => {
     setLoading(true);
     try {
-      const response = await fetch("/api/predict_site_success", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          region: selectedRegion,
-          event_type: selectedEventType,
-        }),
-      });
-      const data = await response.json();
-      setRecommendations(data.recommendations || mockRecommendations);
+      setCowData(mockCOWData);
+      setRegionalStats(calculateRegionalStats(mockCOWData));
     } catch (error) {
-      console.error("Error getting recommendations:", error);
-      setRecommendations(mockRecommendations);
+      console.error("Error loading COW data:", error);
     } finally {
       setLoading(false);
     }
