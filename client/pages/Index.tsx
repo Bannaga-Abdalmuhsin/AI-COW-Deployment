@@ -79,22 +79,22 @@ export default function Index() {
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center mb-16">
-          <h1 className="text-5xl sm:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-5xl sm:text-6xl font-bold text-stc-purple-dark mb-6 leading-tight">
             AI-Powered COW Deployment Planning
           </h1>
-          <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Predict demand, optimize site selection, and ensure deployment
             success with machine learning-driven recommendations
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link to="/dashboard">
-              <Button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 text-lg flex items-center gap-2">
+              <Button className="bg-stc-purple hover:bg-stc-purple/90 text-white px-8 py-6 text-lg flex items-center gap-2 shadow-lg">
                 Launch Dashboard <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
             <Button
               variant="outline"
-              className="px-8 py-6 text-lg border-slate-600 text-white hover:bg-slate-800"
+              className="px-8 py-6 text-lg border-stc-purple text-stc-purple hover:bg-stc-purple/10"
             >
               Learn More
             </Button>
