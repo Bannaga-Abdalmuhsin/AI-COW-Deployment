@@ -429,42 +429,43 @@ export default function Dashboard() {
               </Card>
             </div>
 
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-white border-stc-purple/10 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-white">Performance Trends</CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardTitle className="text-stc-purple-dark">Performance Trends</CardTitle>
+                <CardDescription className="text-gray-600">
                   6-month metrics overview
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={mockTimeSeriesData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-                    <XAxis dataKey="month" stroke="#94a3b8" />
-                    <YAxis stroke="#94a3b8" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5DCEC" />
+                    <XAxis dataKey="month" stroke="#6B6B6B" />
+                    <YAxis stroke="#6B6B6B" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: "#1e293b",
-                        border: "1px solid #475569",
+                        backgroundColor: "#F6F0FA",
+                        border: "1px solid #E5DCEC",
+                        color: "#1F1F1F"
                       }}
-                      cursor={{ stroke: "rgba(59, 130, 246, 0.2)" }}
+                      cursor={{ stroke: "rgba(110, 43, 140, 0.2)" }}
                     />
                     <Line
                       type="monotone"
                       dataKey="demand"
-                      stroke="#3b82f6"
+                      stroke="#6E2B8C"
                       name="Demand"
                     />
                     <Line
                       type="monotone"
                       dataKey="success"
-                      stroke="#10b981"
+                      stroke="#2BB673"
                       name="Success %"
                     />
                     <Line
                       type="monotone"
                       dataKey="logistics"
-                      stroke="#a78bfa"
+                      stroke="#B58BD6"
                       name="Setup Hrs"
                     />
                   </LineChart>
