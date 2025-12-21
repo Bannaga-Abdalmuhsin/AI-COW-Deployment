@@ -81,7 +81,9 @@ export default function Index() {
               <div className="bg-blue-500 rounded-lg p-2">
                 <Zap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">COW Deploy AI</span>
+              <span className="text-xl font-bold text-white">
+                COW Deploy AI
+              </span>
             </div>
             <div className="hidden sm:block h-8 w-px bg-slate-700"></div>
             <img

@@ -73,7 +73,9 @@ export default function DataManagement() {
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-white">Data Management</h1>
+                <h1 className="text-3xl font-bold text-white">
+                  Data Management
+                </h1>
                 <p className="text-slate-400 mt-1">
                   Upload and manage your deployment data
                 </p>
