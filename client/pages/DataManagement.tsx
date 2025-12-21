@@ -157,7 +157,9 @@ export default function DataManagement() {
         {/* Training Guide */}
         <Card className="bg-white border-stc-purple/10 mt-8 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-stc-purple-dark">ML Model Training</CardTitle>
+            <CardTitle className="text-stc-purple-dark">
+              ML Model Training
+            </CardTitle>
             <CardDescription className="text-gray-600">
               After uploading all datasets, trigger the training workflow
             </CardDescription>
@@ -203,7 +205,9 @@ export default function DataManagement() {
 
         {/* Info Section */}
         <div className="mt-8 p-6 bg-stc-lilac border border-stc-purple/20 rounded-lg">
-          <h3 className="text-stc-purple-dark font-semibold mb-3">Need Sample Data?</h3>
+          <h3 className="text-stc-purple-dark font-semibold mb-3">
+            Need Sample Data?
+          </h3>
           <p className="text-gray-700 text-sm mb-4">
             Download our template Excel files to get started with the correct
             column structure.

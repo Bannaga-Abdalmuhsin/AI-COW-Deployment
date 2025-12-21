@@ -163,7 +163,9 @@ export default function Index() {
               >
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-2 h-2 bg-stc-purple rounded-full"></div>
-                  <h4 className="font-semibold text-stc-purple-dark">{req.table}</h4>
+                  <h4 className="font-semibold text-stc-purple-dark">
+                    {req.table}
+                  </h4>
                 </div>
                 <p className="text-gray-600 text-sm">{req.rows}</p>
               </div>
@@ -180,7 +182,9 @@ export default function Index() {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <BarChart3 className="w-6 h-6 text-stc-purple" />
-                <h3 className="font-semibold text-stc-purple-dark">Demand Prediction</h3>
+                <h3 className="font-semibold text-stc-purple-dark">
+                  Demand Prediction
+                </h3>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 Forecasts COW demand by region and event type based on temporal
@@ -208,7 +212,9 @@ export default function Index() {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <TrendingUp className="w-6 h-6 text-stc-purple" />
-                <h3 className="font-semibold text-stc-purple-dark">Logistics Planning</h3>
+                <h3 className="font-semibold text-stc-purple-dark">
+                  Logistics Planning
+                </h3>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 Estimates setup time and logistics risks based on warehouse

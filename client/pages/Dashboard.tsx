@@ -177,7 +177,9 @@ export default function Dashboard() {
         {/* Control Panel */}
         <Card className="bg-white border-stc-purple/10 mb-8 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-stc-purple-dark">Prediction Controls</CardTitle>
+            <CardTitle className="text-stc-purple-dark">
+              Prediction Controls
+            </CardTitle>
             <CardDescription className="text-gray-600">
               Select region and event type to generate predictions
             </CardDescription>
@@ -240,15 +242,24 @@ export default function Dashboard() {
         {/* Main Tabs */}
         <Tabs defaultValue="demand" className="space-y-4">
           <TabsList className="bg-white border-stc-purple/10">
-            <TabsTrigger value="demand" className="text-gray-600 data-[state=active]:text-stc-purple">
+            <TabsTrigger
+              value="demand"
+              className="text-gray-600 data-[state=active]:text-stc-purple"
+            >
               <BarChart3 className="w-4 h-4 mr-2" />
               Demand Prediction
             </TabsTrigger>
-            <TabsTrigger value="sites" className="text-gray-600 data-[state=active]:text-stc-purple">
+            <TabsTrigger
+              value="sites"
+              className="text-gray-600 data-[state=active]:text-stc-purple"
+            >
               <MapPin className="w-4 h-4 mr-2" />
               Site Recommendations
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="text-gray-600 data-[state=active]:text-stc-purple">
+            <TabsTrigger
+              value="analytics"
+              className="text-gray-600 data-[state=active]:text-stc-purple"
+            >
               <TrendingUp className="w-4 h-4 mr-2" />
               Analytics
             </TabsTrigger>
@@ -275,7 +286,7 @@ export default function Dashboard() {
                       contentStyle={{
                         backgroundColor: "#F6F0FA",
                         border: "1px solid #E5DCEC",
-                        color: "#1F1F1F"
+                        color: "#1F1F1F",
                       }}
                       cursor={{ fill: "rgba(110, 43, 140, 0.1)" }}
                     />
@@ -399,7 +410,9 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-gray-600 text-sm">Avg Demand</p>
-                      <p className="text-3xl font-bold text-stc-purple-dark">82.5%</p>
+                      <p className="text-3xl font-bold text-stc-purple-dark">
+                        82.5%
+                      </p>
                     </div>
                     <BarChart3 className="w-8 h-8 text-stc-purple" />
                   </div>
@@ -410,7 +423,9 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-gray-600 text-sm">Success Rate</p>
-                      <p className="text-3xl font-bold text-stc-purple-dark">87.0%</p>
+                      <p className="text-3xl font-bold text-stc-purple-dark">
+                        87.0%
+                      </p>
                     </div>
                     <TrendingUp className="w-8 h-8 text-success" />
                   </div>
@@ -421,7 +436,9 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-gray-600 text-sm">Avg Setup Time</p>
-                      <p className="text-3xl font-bold text-stc-purple-dark">25.7 hrs</p>
+                      <p className="text-3xl font-bold text-stc-purple-dark">
+                        25.7 hrs
+                      </p>
                     </div>
                     <Zap className="w-8 h-8 text-stc-purple" />
                   </div>
@@ -431,7 +448,9 @@ export default function Dashboard() {
 
             <Card className="bg-white border-stc-purple/10 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-stc-purple-dark">Performance Trends</CardTitle>
+                <CardTitle className="text-stc-purple-dark">
+                  Performance Trends
+                </CardTitle>
                 <CardDescription className="text-gray-600">
                   6-month metrics overview
                 </CardDescription>
@@ -446,7 +465,7 @@ export default function Dashboard() {
                       contentStyle={{
                         backgroundColor: "#F6F0FA",
                         border: "1px solid #E5DCEC",
-                        color: "#1F1F1F"
+                        color: "#1F1F1F",
                       }}
                       cursor={{ stroke: "rgba(110, 43, 140, 0.2)" }}
                     />

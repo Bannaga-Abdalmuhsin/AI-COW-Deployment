@@ -22,7 +22,9 @@ export default function Navigation() {
               <div className="bg-stc-purple rounded-lg p-2 group-hover:bg-stc-purple/90 transition-colors">
                 <Zap className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">COW Deploy AI</span>
+              <span className="text-xl font-bold text-white">
+                COW Deploy AI
+              </span>
             </div>
             <div className="hidden sm:block h-8 w-px bg-white/20"></div>
             <img
