@@ -17,7 +17,12 @@ export const DataStoreManager = {
         ? JSON.parse(stored)
         : { cowAssets: [], movements: [], lastUpdated: "", importSource: null };
     } catch {
-      return { cowAssets: [], movements: [], lastUpdated: "", importSource: null };
+      return {
+        cowAssets: [],
+        movements: [],
+        lastUpdated: "",
+        importSource: null,
+      };
     }
   },
 
@@ -27,7 +32,7 @@ export const DataStoreManager = {
 
   importCOWAssets(
     assets: ParsedCOWAsset[],
-    source: "sample" | "uploaded"
+    source: "sample" | "uploaded",
   ): void {
     const store = this.getStoreFromLocalStorage();
     store.cowAssets = assets;
@@ -36,7 +41,10 @@ export const DataStoreManager = {
     this.saveStoreToLocalStorage(store);
   },
 
-  importMovements(movements: ParsedMovement[], source: "sample" | "uploaded"): void {
+  importMovements(
+    movements: ParsedMovement[],
+    source: "sample" | "uploaded",
+  ): void {
     const store = this.getStoreFromLocalStorage();
     store.movements = movements;
     store.lastUpdated = new Date().toISOString();

@@ -98,19 +98,23 @@ export default function DataManagement() {
     } catch (error) {
       setUploadStatus({
         type: "error",
-        message: error instanceof Error ? error.message : "Failed to load sample data",
+        message:
+          error instanceof Error ? error.message : "Failed to load sample data",
       });
     }
   };
 
   const handleFileUpload = async (
     event: React.ChangeEvent<HTMLInputElement>,
-    dataType: "cow" | "movement"
+    dataType: "cow" | "movement",
   ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    setUploadStatus({ type: "loading", message: `Processing ${dataType} file...` });
+    setUploadStatus({
+      type: "loading",
+      message: `Processing ${dataType} file...`,
+    });
 
     try {
       const text = await file.text();
@@ -142,7 +146,8 @@ export default function DataManagement() {
     } catch (error) {
       setUploadStatus({
         type: "error",
-        message: error instanceof Error ? error.message : "Failed to process file",
+        message:
+          error instanceof Error ? error.message : "Failed to process file",
         dataType,
       });
     }
@@ -220,7 +225,9 @@ export default function DataManagement() {
         {(cowAssetsCount > 0 || movementsCount > 0) && (
           <Card className="bg-white border-stc-purple/10 mb-8 shadow-sm">
             <CardHeader>
-              <CardTitle className="text-stc-purple-dark">Data Summary</CardTitle>
+              <CardTitle className="text-stc-purple-dark">
+                Data Summary
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid md:grid-cols-3 gap-4">

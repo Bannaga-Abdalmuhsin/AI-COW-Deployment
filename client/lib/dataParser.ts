@@ -65,7 +65,7 @@ export class DataParser {
         assets.push(asset);
       } catch (error) {
         errors.push(
-          `Row ${i + 1}: ${error instanceof Error ? error.message : "Unknown error"}`
+          `Row ${i + 1}: ${error instanceof Error ? error.message : "Unknown error"}`,
         );
       }
     }
@@ -73,9 +73,7 @@ export class DataParser {
     return assets;
   }
 
-  static parseMovementArchiveFromCSV(
-    csvContent: string
-  ): ParsedMovement[] {
+  static parseMovementArchiveFromCSV(csvContent: string): ParsedMovement[] {
     const lines = csvContent.trim().split("\n");
     if (lines.length < 2) {
       throw new Error("CSV file is empty or contains only headers");
@@ -98,7 +96,7 @@ export class DataParser {
         movements.push(movement);
       } catch (error) {
         errors.push(
-          `Row ${i + 1}: ${error instanceof Error ? error.message : "Unknown error"}`
+          `Row ${i + 1}: ${error instanceof Error ? error.message : "Unknown error"}`,
         );
       }
     }
@@ -108,7 +106,7 @@ export class DataParser {
 
   private static validateCOWAsset(
     data: Record<string, string>,
-    rowNumber: number
+    rowNumber: number,
   ): ParsedCOWAsset {
     const required = ["cowid", "site_label", "region", "vendor"];
     for (const field of required) {
@@ -146,7 +144,7 @@ export class DataParser {
 
   private static validateMovement(
     data: Record<string, string>,
-    rowNumber: number
+    rowNumber: number,
   ): ParsedMovement {
     const required = [
       "movement_id",
