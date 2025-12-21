@@ -47,14 +47,11 @@ interface RegionalStats {
 }
 
 export default function Dashboard() {
-  const [demandData, setDemandData] = useState<DemandPrediction[]>([]);
-  const [recommendations, setRecommendations] = useState<SiteRecommendation[]>(
-    [],
-  );
-  const [logisticsData, setLogisticsData] = useState<LogisticsPrediction[]>([]);
+  const [cowData, setCowData] = useState<COWAsset[]>([]);
+  const [regionalStats, setRegionalStats] = useState<RegionalStats[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState("KSA");
-  const [selectedEventType, setSelectedEventType] = useState("Religious");
+  const [selectedVendor, setSelectedVendor] = useState("All");
 
   // Mock demand data for visualization
   const mockDemandData = [
