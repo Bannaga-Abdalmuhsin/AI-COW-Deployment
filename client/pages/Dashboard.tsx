@@ -254,28 +254,28 @@ export default function Dashboard() {
         </Card>
 
         {/* Main Tabs */}
-        <Tabs defaultValue="demand" className="space-y-4">
+        <Tabs defaultValue="distribution" className="space-y-4">
           <TabsList className="bg-white border-stc-purple/10">
             <TabsTrigger
-              value="demand"
-              className="text-gray-600 data-[state=active]:text-stc-purple"
-            >
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Demand Prediction
-            </TabsTrigger>
-            <TabsTrigger
-              value="sites"
+              value="distribution"
               className="text-gray-600 data-[state=active]:text-stc-purple"
             >
               <MapPin className="w-4 h-4 mr-2" />
-              Site Recommendations
+              Current Distribution
+            </TabsTrigger>
+            <TabsTrigger
+              value="inventory"
+              className="text-gray-600 data-[state=active]:text-stc-purple"
+            >
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Inventory by Region
             </TabsTrigger>
             <TabsTrigger
               value="analytics"
               className="text-gray-600 data-[state=active]:text-stc-purple"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
-              Analytics
+              Statistics
             </TabsTrigger>
           </TabsList>
 
