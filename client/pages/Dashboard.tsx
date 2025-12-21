@@ -24,26 +24,26 @@ import {
 } from "recharts";
 import { TrendingUp, MapPin, Zap, BarChart3, AlertCircle } from "lucide-react";
 
-interface DemandPrediction {
+interface COWAsset {
+  cowid: string;
+  site_label: string;
   region: string;
-  date: string;
-  demand_score: number;
-}
-
-interface SiteRecommendation {
-  site_id: string;
-  region: string;
-  success_probability: number;
+  district: string;
+  city: string;
+  latitude: number;
+  longitude: number;
   vendor: string;
-  tech: string;
-  distance_km: number;
-  explanation: string;
+  shelter_outdoor: string;
+  last_deploying_date: string;
+  remarks: string;
 }
 
-interface LogisticsPrediction {
-  warehouse_id: string;
-  site_id: string;
-  predicted_time_hours: number;
+interface RegionalStats {
+  region: string;
+  total_cows: number;
+  vendors: string[];
+  avg_lat: number;
+  avg_lon: number;
 }
 
 export default function Dashboard() {
