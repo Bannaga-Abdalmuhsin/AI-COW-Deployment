@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -7,7 +8,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
-import { Upload, Database } from "lucide-react";
+import { Upload, Database, CheckCircle2, AlertCircle } from "lucide-react";
+import { DataParser } from "@/lib/dataParser";
+import { DataStoreManager } from "@/lib/dataStore";
+import { SAMPLE_COW_ASSETS, SAMPLE_MOVEMENTS } from "@/lib/sampleData";
 
 const datasetTypes = [
   {
