@@ -51,12 +51,33 @@ interface RegionalStats {
 export default function Dashboard() {
   const [cowData, setCowData] = useState<COWAsset[]>([]);
   const [regionalStats, setRegionalStats] = useState<RegionalStats[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [selectedRegion, setSelectedRegion] = useState("KSA");
   const [selectedVendor, setSelectedVendor] = useState("All");
+  const [dataLoaded, setDataLoaded] = useState(false);
 
-  // Sample COW distribution data
-  const mockCOWData: COWAsset[] = [
+  // Load data from store on component mount
+  useEffect(() => {
+    const loadStoredData = () => {
+      const storedAssets = DataStoreManager.getCOWAssets();
+
+      if (storedAssets.length > 0) {
+        setCowData(storedAssets);
+        setDataLoaded(true);
+      } else {
+        // Use sample data if no data is stored
+        setCowData(SAMPLE_COW_ASSETS as unknown as COWAsset[]);
+        setDataLoaded(false);
+      }
+
+      setLoading(false);
+    };
+
+    loadStoredData();
+  }, []);
+
+  // Sample COW distribution data (fallback)
+  const mockCOWData: COWAsset[] = SAMPLE_COW_ASSETS as unknown as COWAsset[] || [
     {
       cowid: "COW001",
       site_label: "Riyadh Central",
