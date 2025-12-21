@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import Navigation from "@/components/Navigation";
 import { Upload, Database } from "lucide-react";
 
 const datasetTypes = [
