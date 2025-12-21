@@ -260,11 +260,26 @@ export default function Index() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800 bg-slate-950 py-8 mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-400">
-          <p>
-            COW Deploy AI • ML-Powered Cell on Wheels Deployment Optimization
-          </p>
+      <footer className="border-t border-slate-800 bg-slate-950 py-12 mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col items-center gap-8 mb-8">
+            <div className="flex items-center gap-6 flex-wrap justify-center">
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fc565c09ac98d4bb1923fb8ee199fe98c?format=webp&width=200"
+                alt="STC Logo"
+                className="h-8"
+              />
+              <div className="hidden sm:block h-8 w-px bg-slate-700"></div>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fed947135ce9d4b3a8b599f5a859cf435?format=webp&width=300"
+                alt="ACES Managed Services Logo"
+                className="h-8"
+              />
+            </div>
+            <p className="text-center text-slate-400">
+              COW Deploy AI • ML-Powered Cell on Wheels Deployment Optimization
+            </p>
+          </div>
         </div>
       </footer>
     </div>
