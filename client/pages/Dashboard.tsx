@@ -370,80 +370,71 @@ export default function Dashboard() {
             </Card>
           </TabsContent>
 
-          {/* Sites Tab */}
-          <TabsContent value="sites" className="space-y-4">
+          {/* Inventory Tab */}
+          <TabsContent value="inventory" className="space-y-4">
+            <div className="grid md:grid-cols-3 gap-4 mb-4">
+              {calculateRegionalStats(filteredCOWData).map((stat) => (
+                <Card
+                  key={stat.region}
+                  className="bg-white border-stc-purple/10 shadow-sm"
+                >
+                  <CardContent className="pt-6">
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <p className="text-gray-600 text-sm">{stat.region}</p>
+                        <p className="text-3xl font-bold text-stc-purple-dark">
+                          {stat.total_cows}
+                        </p>
+                        <p className="text-xs text-gray-600 mt-1">COW Assets</p>
+                      </div>
+                      <BarChart3 className="w-5 h-5 text-stc-purple" />
+                    </div>
+                    <div className="pt-3 border-t border-stc-purple/10">
+                      <p className="text-xs font-semibold text-gray-600 mb-2">
+                        Vendors
+                      </p>
+                      <div className="flex flex-wrap gap-1">
+                        {stat.vendors.map((vendor) => (
+                          <span
+                            key={vendor}
+                            className="inline-block bg-stc-purple/20 text-stc-purple text-xs px-2 py-1 rounded"
+                          >
+                            {vendor}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
             <Card className="bg-white border-stc-purple/10 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-stc-purple-dark">
-                  Top Site Recommendations
+                  Regional Breakdown
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                  Ranked by success probability and logistics efficiency
+                  COW asset distribution by region
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {(recommendations.length > 0
-                  ? recommendations
-                  : mockRecommendations
-                ).map((site, idx) => (
-                  <div
-                    key={site.site_id}
-                    className="border border-stc-purple/10 rounded-lg p-4 hover:border-stc-purple/20 transition-colors"
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="inline-flex items-center justify-center w-6 h-6 bg-stc-purple text-white text-sm font-semibold rounded-full">
-                            {idx + 1}
-                          </span>
-                          <h3 className="text-lg font-semibold text-stc-purple-dark">
-                            {site.site_id}
-                          </h3>
-                        </div>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {site.region} • {site.vendor} • {site.tech}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-3xl font-bold text-success">
-                          {(site.success_probability * 100).toFixed(0)}%
-                        </p>
-                        <p className="text-xs text-gray-600">
-                          Success Probability
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-3 mb-3 pb-3 border-b border-stc-purple/10">
-                      <div>
-                        <p className="text-xs text-gray-600">Distance</p>
-                        <p className="text-sm font-semibold text-stc-purple-dark">
-                          {site.distance_km} km
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-600">Tech</p>
-                        <p className="text-sm font-semibold text-stc-purple-dark">
-                          {site.tech}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-600">Vendor</p>
-                        <p className="text-sm font-semibold text-stc-purple-dark">
-                          {site.vendor}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-2 bg-stc-purple/10 border border-stc-purple/20 rounded p-3">
-                      <AlertCircle className="w-4 h-4 text-stc-purple flex-shrink-0 mt-0.5" />
-                      <p className="text-sm text-stc-purple-dark">
-                        <span className="font-semibold">Why chosen: </span>
-                        {site.explanation}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={calculateRegionalStats(filteredCOWData)}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5DCEC" />
+                    <XAxis dataKey="region" stroke="#6B6B6B" />
+                    <YAxis stroke="#6B6B6B" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#F6F0FA",
+                        border: "1px solid #E5DCEC",
+                        color: "#1F1F1F",
+                      }}
+                      cursor={{ fill: "rgba(110, 43, 140, 0.1)" }}
+                    />
+                    <Bar dataKey="total_cows" fill="#6E2B8C" />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
           </TabsContent>
