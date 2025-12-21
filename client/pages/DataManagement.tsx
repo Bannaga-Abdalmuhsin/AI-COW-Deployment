@@ -86,26 +86,26 @@ export default function DataManagement() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Upload Guide */}
-        <Card className="bg-slate-800/50 border-slate-700 mb-8">
+        <Card className="bg-white border-stc-purple/10 mb-8 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <Upload className="w-5 h-5 text-blue-400" />
+            <CardTitle className="text-stc-purple-dark flex items-center gap-2">
+              <Upload className="w-5 h-5 text-stc-purple" />
               Data Upload Requirements
             </CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardDescription className="text-gray-600">
               Prepare your 5 clean data tables in Excel or CSV format
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
-              <p className="text-blue-100 text-sm">
+            <div className="bg-stc-purple/10 border border-stc-purple/20 rounded-lg p-4 mb-6">
+              <p className="text-stc-purple-dark text-sm">
                 ⚠️ <span className="font-semibold">Important:</span> Deployment
                 History table is essential for training ML models. The more
                 historical data you provide (3+ years recommended), the better
                 the predictions.
               </p>
             </div>
-            <p className="text-slate-300 mb-4">
+            <p className="text-gray-700 mb-4">
               Each dataset should include the following columns:
             </p>
           </CardContent>
@@ -116,37 +116,37 @@ export default function DataManagement() {
           {datasetTypes.map((dataset) => (
             <Card
               key={dataset.name}
-              className="bg-slate-800/50 border-slate-700 flex flex-col"
+              className="bg-white border-stc-purple/10 flex flex-col shadow-sm"
             >
               <CardHeader>
                 <div className="flex items-start justify-between mb-2">
-                  <CardTitle className="text-white text-lg">
+                  <CardTitle className="text-stc-purple-dark text-lg">
                     {dataset.name}
                   </CardTitle>
-                  <Database className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                  <Database className="w-5 h-5 text-stc-purple flex-shrink-0" />
                 </div>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-gray-600">
                   {dataset.description}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 <div className="mb-4 flex-1">
-                  <p className="text-xs font-semibold text-slate-300 mb-2 uppercase">
+                  <p className="text-xs font-semibold text-stc-purple-dark mb-2 uppercase">
                     Columns
                   </p>
                   <ul className="space-y-1">
                     {dataset.columns.map((col) => (
                       <li
                         key={col}
-                        className="text-xs text-slate-400 flex items-center gap-2"
+                        className="text-xs text-gray-600 flex items-center gap-2"
                       >
-                        <span className="w-1 h-1 bg-blue-400 rounded-full"></span>
+                        <span className="w-1 h-1 bg-stc-purple rounded-full"></span>
                         {col}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+                <Button className="w-full bg-stc-purple hover:bg-stc-purple/90 text-white">
                   Upload {dataset.name}
                 </Button>
               </CardContent>
@@ -155,45 +155,45 @@ export default function DataManagement() {
         </div>
 
         {/* Training Guide */}
-        <Card className="bg-slate-800/50 border-slate-700 mt-8">
+        <Card className="bg-white border-stc-purple/10 mt-8 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-white">ML Model Training</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-stc-purple-dark">ML Model Training</CardTitle>
+            <CardDescription className="text-gray-600">
               After uploading all datasets, trigger the training workflow
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="border-l-4 border-blue-500 pl-4">
-                <h4 className="font-semibold text-white mb-1">
+              <div className="border-l-4 border-stc-purple pl-4">
+                <h4 className="font-semibold text-stc-purple-dark mb-1">
                   Step 1: Data Validation
                 </h4>
-                <p className="text-slate-400 text-sm">
+                <p className="text-gray-600 text-sm">
                   System validates all uploaded tables for completeness and
                   consistency
                 </p>
               </div>
-              <div className="border-l-4 border-blue-500 pl-4">
-                <h4 className="font-semibold text-white mb-1">
+              <div className="border-l-4 border-stc-purple pl-4">
+                <h4 className="font-semibold text-stc-purple-dark mb-1">
                   Step 2: Model Training
                 </h4>
-                <p className="text-slate-400 text-sm">
+                <p className="text-gray-600 text-sm">
                   70% training / 15% validation / 15% testing split. Trains 3
                   models: demand prediction, site success, logistics time
                 </p>
               </div>
-              <div className="border-l-4 border-blue-500 pl-4">
-                <h4 className="font-semibold text-white mb-1">
+              <div className="border-l-4 border-stc-purple pl-4">
+                <h4 className="font-semibold text-stc-purple-dark mb-1">
                   Step 3: Model Deployment
                 </h4>
-                <p className="text-slate-400 text-sm">
+                <p className="text-gray-600 text-sm">
                   Models deployed as APIs and integrated into the dashboard.
                   Runs automatically monthly or on-demand
                 </p>
               </div>
             </div>
             <Button
-              className="mt-6 bg-green-500 hover:bg-green-600 text-white w-full"
+              className="mt-6 bg-success hover:bg-success/90 text-white w-full"
               disabled
             >
               Start Training (Upload data first)
@@ -202,15 +202,15 @@ export default function DataManagement() {
         </Card>
 
         {/* Info Section */}
-        <div className="mt-8 p-6 bg-slate-800/30 border border-slate-700 rounded-lg">
-          <h3 className="text-white font-semibold mb-3">Need Sample Data?</h3>
-          <p className="text-slate-300 text-sm mb-4">
+        <div className="mt-8 p-6 bg-stc-lilac border border-stc-purple/20 rounded-lg">
+          <h3 className="text-stc-purple-dark font-semibold mb-3">Need Sample Data?</h3>
+          <p className="text-gray-700 text-sm mb-4">
             Download our template Excel files to get started with the correct
             column structure.
           </p>
           <Button
             variant="outline"
-            className="border-slate-600 text-white hover:bg-slate-700"
+            className="border-stc-purple text-stc-purple hover:bg-stc-purple/10"
           >
             Download Templates
           </Button>
