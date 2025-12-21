@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Navigation from "@/components/Navigation";
 import {
@@ -23,6 +23,8 @@ import {
   Scatter,
 } from "recharts";
 import { TrendingUp, MapPin, Zap, BarChart3, AlertCircle } from "lucide-react";
+import { DataStoreManager } from "@/lib/dataStore";
+import { SAMPLE_COW_ASSETS } from "@/lib/sampleData";
 
 interface COWAsset {
   cowid: string;
