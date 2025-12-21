@@ -187,14 +187,14 @@ export default function Dashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Control Panel */}
+        {/* Filters Panel */}
         <Card className="bg-white border-stc-purple/10 mb-8 shadow-sm">
           <CardHeader>
             <CardTitle className="text-stc-purple-dark">
-              Prediction Controls
+              Filter & View COW Distribution
             </CardTitle>
             <CardDescription className="text-gray-600">
-              Select region and event type to generate predictions
+              Filter assets by region and vendor to analyze current distribution
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -208,44 +208,45 @@ export default function Dashboard() {
                   onChange={(e) => setSelectedRegion(e.target.value)}
                   className="w-full px-3 py-2 bg-white border border-stc-purple/20 text-gray-900 rounded-md focus:border-stc-purple focus:ring-stc-purple"
                 >
-                  <option>KSA</option>
-                  <option>Riyadh</option>
-                  <option>Jeddah</option>
-                  <option>Dammam</option>
-                  <option>Mecca</option>
+                  <option value="KSA">All Regions (KSA)</option>
+                  <option value="Riyadh">Riyadh</option>
+                  <option value="Jeddah">Jeddah</option>
+                  <option value="Dammam">Dammam</option>
+                  <option value="Mecca">Mecca</option>
                 </select>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-2">
-                  Event Type
+                  Vendor
                 </label>
                 <select
-                  value={selectedEventType}
-                  onChange={(e) => setSelectedEventType(e.target.value)}
+                  value={selectedVendor}
+                  onChange={(e) => setSelectedVendor(e.target.value)}
                   className="w-full px-3 py-2 bg-white border border-stc-purple/20 text-gray-900 rounded-md focus:border-stc-purple focus:ring-stc-purple"
                 >
-                  <option>Religious</option>
-                  <option>Sport</option>
-                  <option>National</option>
-                  <option>Incident</option>
+                  <option value="All">All Vendors</option>
+                  {uniqueVendors.map((vendor) => (
+                    <option key={vendor} value={vendor}>
+                      {vendor}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div className="flex items-end gap-2">
                 <Button
-                  onClick={handlePredictDemand}
+                  onClick={handleLoadData}
                   disabled={loading}
                   className="bg-stc-purple hover:bg-stc-purple/90 text-white flex-1"
                 >
-                  Predict Demand
+                  Load Data
                 </Button>
               </div>
               <div className="flex items-end gap-2">
                 <Button
-                  onClick={handleGetRecommendations}
-                  disabled={loading}
-                  className="bg-success hover:bg-success/90 text-white flex-1"
+                  variant="outline"
+                  className="border-stc-purple text-stc-purple hover:bg-stc-purple/10 flex-1"
                 >
-                  Get Recommendations
+                  Export CSV
                 </Button>
               </div>
             </div>
