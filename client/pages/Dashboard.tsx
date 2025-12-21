@@ -560,9 +560,10 @@ export default function Dashboard() {
         {/* Footer Info */}
         <div className="mt-8 p-4 bg-stc-lilac border border-stc-purple/20 rounded-lg text-gray-600 text-sm">
           <p>
-            💡 All predictions are based on trained ML models using 3+ years of
-            deployment history. Final deployment decisions should incorporate
-            human review and business constraints.
+            💡 This dashboard displays current COW asset distribution based on
+            the COW Master sheet. Upload Movement Archive with historical data
+            to enable ML predictions for demand forecasting and site success
+            scoring.
           </p>
         </div>
       </div>
