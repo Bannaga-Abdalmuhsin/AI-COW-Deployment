@@ -164,7 +164,9 @@ export default function Dashboard() {
     }));
   };
 
-  const filteredCOWData = mockCOWData.filter((cow) => {
+  const displayData = cowData.length > 0 ? cowData : mockCOWData;
+
+  const filteredCOWData = displayData.filter((cow) => {
     const regionMatch =
       selectedRegion === "KSA" || cow.region === selectedRegion;
     const vendorMatch =
@@ -172,13 +174,12 @@ export default function Dashboard() {
     return regionMatch && vendorMatch;
   });
 
-  const uniqueVendors = [...new Set(mockCOWData.map((cow) => cow.vendor))];
+  const uniqueVendors = [...new Set(displayData.map((cow) => cow.vendor))];
 
   const handleLoadData = async () => {
     setLoading(true);
     try {
-      setCowData(mockCOWData);
-      setRegionalStats(calculateRegionalStats(mockCOWData));
+      setRegionalStats(calculateRegionalStats(displayData));
     } catch (error) {
       console.error("Error loading COW data:", error);
     } finally {
