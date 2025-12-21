@@ -219,7 +219,7 @@ export default function Dashboard() {
                 <Button
                   onClick={handlePredictDemand}
                   disabled={loading}
-                  className="bg-blue-500 hover:bg-blue-600 text-white flex-1"
+                  className="bg-stc-purple hover:bg-stc-purple/90 text-white flex-1"
                 >
                   Predict Demand
                 </Button>
@@ -228,7 +228,7 @@ export default function Dashboard() {
                 <Button
                   onClick={handleGetRecommendations}
                   disabled={loading}
-                  className="bg-green-500 hover:bg-green-600 text-white flex-1"
+                  className="bg-success hover:bg-success/90 text-white flex-1"
                 >
                   Get Recommendations
                 </Button>
