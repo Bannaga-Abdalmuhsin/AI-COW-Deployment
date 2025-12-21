@@ -150,22 +150,22 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900">
+    <div className="min-h-screen bg-stc-lilac">
       <Navigation />
 
       {/* Page Header */}
-      <div className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+      <div className="border-b border-stc-purple/10 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className="text-3xl font-bold text-stc-purple-dark">
                 COW Deployment Dashboard
               </h1>
-              <p className="text-slate-400 mt-1">
+              <p className="text-gray-600 mt-1">
                 AI-powered predictions and recommendations
               </p>
             </div>
-            <div className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg">
+            <div className="flex items-center gap-2 bg-stc-purple text-white px-4 py-2 rounded-lg shadow-md">
               <Zap className="w-4 h-4" />
               <span className="text-sm font-medium">ML Active</span>
             </div>
