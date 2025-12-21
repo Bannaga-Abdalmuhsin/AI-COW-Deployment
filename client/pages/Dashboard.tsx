@@ -439,16 +439,29 @@ export default function Dashboard() {
             </Card>
           </TabsContent>
 
-          {/* Analytics Tab */}
+          {/* Statistics Tab */}
           <TabsContent value="analytics" className="space-y-4">
             <div className="grid md:grid-cols-3 gap-4 mb-4">
               <Card className="bg-white border-stc-purple/10 shadow-sm">
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-600 text-sm">Avg Demand</p>
+                      <p className="text-gray-600 text-sm">Total COW Assets</p>
                       <p className="text-3xl font-bold text-stc-purple-dark">
-                        82.5%
+                        {filteredCOWData.length}
+                      </p>
+                    </div>
+                    <MapPin className="w-8 h-8 text-stc-purple" />
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-white border-stc-purple/10 shadow-sm">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-gray-600 text-sm">Unique Vendors</p>
+                      <p className="text-3xl font-bold text-stc-purple-dark">
+                        {[...new Set(filteredCOWData.map((c) => c.vendor))].length}
                       </p>
                     </div>
                     <BarChart3 className="w-8 h-8 text-stc-purple" />
@@ -459,25 +472,12 @@ export default function Dashboard() {
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-600 text-sm">Success Rate</p>
+                      <p className="text-gray-600 text-sm">Active Regions</p>
                       <p className="text-3xl font-bold text-stc-purple-dark">
-                        87.0%
+                        {calculateRegionalStats(filteredCOWData).length}
                       </p>
                     </div>
                     <TrendingUp className="w-8 h-8 text-success" />
-                  </div>
-                </CardContent>
-              </Card>
-              <Card className="bg-white border-stc-purple/10 shadow-sm">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-gray-600 text-sm">Avg Setup Time</p>
-                      <p className="text-3xl font-bold text-stc-purple-dark">
-                        25.7 hrs
-                      </p>
-                    </div>
-                    <Zap className="w-8 h-8 text-stc-purple" />
                   </div>
                 </CardContent>
               </Card>
@@ -486,17 +486,24 @@ export default function Dashboard() {
             <Card className="bg-white border-stc-purple/10 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-stc-purple-dark">
-                  Performance Trends
+                  Vendor Distribution
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                  6-month metrics overview
+                  COW count by vendor
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={mockTimeSeriesData}>
+                  <BarChart
+                    data={uniqueVendors.map((vendor) => ({
+                      name: vendor,
+                      count: filteredCOWData.filter(
+                        (cow) => cow.vendor === vendor
+                      ).length,
+                    }))}
+                  >
                     <CartesianGrid strokeDasharray="3 3" stroke="#E5DCEC" />
-                    <XAxis dataKey="month" stroke="#6B6B6B" />
+                    <XAxis dataKey="name" stroke="#6B6B6B" />
                     <YAxis stroke="#6B6B6B" />
                     <Tooltip
                       contentStyle={{
@@ -504,27 +511,46 @@ export default function Dashboard() {
                         border: "1px solid #E5DCEC",
                         color: "#1F1F1F",
                       }}
-                      cursor={{ stroke: "rgba(110, 43, 140, 0.2)" }}
+                      cursor={{ fill: "rgba(110, 43, 140, 0.1)" }}
                     />
-                    <Line
-                      type="monotone"
-                      dataKey="demand"
-                      stroke="#6E2B8C"
-                      name="Demand"
+                    <Bar dataKey="count" fill="#6E2B8C" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white border-stc-purple/10 shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-stc-purple-dark">
+                  Shelter Type Distribution
+                </CardTitle>
+                <CardDescription className="text-gray-600">
+                  Assets by deployment type
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart
+                    data={["Shelter", "Outdoor"].map((type) => ({
+                      type,
+                      count: filteredCOWData.filter(
+                        (cow) => cow.shelter_outdoor === type
+                      ).length,
+                    }))}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5DCEC" />
+                    <XAxis dataKey="type" stroke="#6B6B6B" />
+                    <YAxis stroke="#6B6B6B" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#F6F0FA",
+                        border: "1px solid #E5DCEC",
+                        color: "#1F1F1F",
+                      }}
+                      cursor={{ fill: "rgba(110, 43, 140, 0.1)" }}
                     />
-                    <Line
-                      type="monotone"
-                      dataKey="success"
-                      stroke="#2BB673"
-                      name="Success %"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="logistics"
-                      stroke="#B58BD6"
-                      name="Setup Hrs"
-                    />
-                  </LineChart>
+                    <Bar dataKey="count" fill="#6E2B8C" />
+                  </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
