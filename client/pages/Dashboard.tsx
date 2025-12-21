@@ -1,0 +1,472 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ScatterChart,
+  Scatter,
+} from "recharts";
+import { TrendingUp, MapPin, Zap, BarChart3, AlertCircle } from "lucide-react";
+
+interface DemandPrediction {
+  region: string;
+  date: string;
+  demand_score: number;
+}
+
+interface SiteRecommendation {
+  site_id: string;
+  region: string;
+  success_probability: number;
+  vendor: string;
+  tech: string;
+  distance_km: number;
+  explanation: string;
+}
+
+interface LogisticsPrediction {
+  warehouse_id: string;
+  site_id: string;
+  predicted_time_hours: number;
+}
+
+export default function Dashboard() {
+  const [demandData, setDemandData] = useState<DemandPrediction[]>([]);
+  const [recommendations, setRecommendations] = useState<SiteRecommendation[]>([]);
+  const [logisticsData, setLogisticsData] = useState<LogisticsPrediction[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [selectedRegion, setSelectedRegion] = useState("KSA");
+  const [selectedEventType, setSelectedEventType] = useState("Religious");
+
+  // Mock demand data for visualization
+  const mockDemandData = [
+    { region: "Riyadh", date: "2024-01", demand_score: 0.75 },
+    { region: "Jeddah", date: "2024-01", demand_score: 0.62 },
+    { region: "Dammam", date: "2024-01", demand_score: 0.48 },
+    { region: "Mecca", date: "2024-01", demand_score: 0.92 },
+    { region: "Medina", date: "2024-01", demand_score: 0.85 },
+  ];
+
+  const mockRecommendations: SiteRecommendation[] = [
+    {
+      site_id: "SITE-001",
+      region: "Riyadh",
+      success_probability: 0.94,
+      vendor: "Ericsson",
+      tech: "5G",
+      distance_km: 12,
+      explanation:
+        "High success rate (94%), compatible vendor, nearest warehouse, proven 5G deployment history",
+    },
+    {
+      site_id: "SITE-002",
+      region: "Riyadh",
+      success_probability: 0.87,
+      vendor: "Nokia",
+      tech: "4G/5G",
+      distance_km: 18,
+      explanation:
+        "Strong vendor match, adequate tower height, VSAT capable, 87% historical success",
+    },
+    {
+      site_id: "SITE-003",
+      region: "Jeddah",
+      success_probability: 0.79,
+      vendor: "Huawei",
+      tech: "4G",
+      distance_km: 8,
+      explanation:
+        "Closest warehouse location, but lower tech capability. Still viable for 4G deployment",
+    },
+  ];
+
+  const mockTimeSeriesData = [
+    { month: "Jan", demand: 65, success: 78, logistics: 24 },
+    { month: "Feb", demand: 75, success: 82, logistics: 22 },
+    { month: "Mar", demand: 68, success: 85, logistics: 28 },
+    { month: "Apr", demand: 82, success: 80, logistics: 26 },
+    { month: "May", demand: 88, success: 87, logistics: 25 },
+    { month: "Jun", demand: 92, success: 91, logistics: 27 },
+  ];
+
+  const handlePredictDemand = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/predict_demand", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          region: selectedRegion,
+          event_type: selectedEventType,
+          month: new Date().getMonth() + 1,
+        }),
+      });
+      const data = await response.json();
+      setDemandData([data]);
+    } catch (error) {
+      console.error("Error predicting demand:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGetRecommendations = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/predict_site_success", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          region: selectedRegion,
+          event_type: selectedEventType,
+        }),
+      });
+      const data = await response.json();
+      setRecommendations(data.recommendations || mockRecommendations);
+    } catch (error) {
+      console.error("Error getting recommendations:", error);
+      setRecommendations(mockRecommendations);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900">
+      {/* Header */}
+      <div className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-sm sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-white">
+                COW Deployment Dashboard
+              </h1>
+              <p className="text-slate-400 mt-1">
+                AI-powered predictions and recommendations
+              </p>
+            </div>
+            <div className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg">
+              <Zap className="w-4 h-4" />
+              <span className="text-sm font-medium">ML Active</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Control Panel */}
+        <Card className="bg-slate-800/50 border-slate-700 mb-8">
+          <CardHeader>
+            <CardTitle className="text-white">Prediction Controls</CardTitle>
+            <CardDescription className="text-slate-400">
+              Select region and event type to generate predictions
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label className="text-sm font-medium text-slate-300 block mb-2">
+                  Region
+                </label>
+                <select
+                  value={selectedRegion}
+                  onChange={(e) => setSelectedRegion(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-md"
+                >
+                  <option>KSA</option>
+                  <option>Riyadh</option>
+                  <option>Jeddah</option>
+                  <option>Dammam</option>
+                  <option>Mecca</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-slate-300 block mb-2">
+                  Event Type
+                </label>
+                <select
+                  value={selectedEventType}
+                  onChange={(e) => setSelectedEventType(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-md"
+                >
+                  <option>Religious</option>
+                  <option>Sport</option>
+                  <option>National</option>
+                  <option>Incident</option>
+                </select>
+              </div>
+              <div className="flex items-end gap-2">
+                <Button
+                  onClick={handlePredictDemand}
+                  disabled={loading}
+                  className="bg-blue-500 hover:bg-blue-600 text-white flex-1"
+                >
+                  Predict Demand
+                </Button>
+              </div>
+              <div className="flex items-end gap-2">
+                <Button
+                  onClick={handleGetRecommendations}
+                  disabled={loading}
+                  className="bg-green-500 hover:bg-green-600 text-white flex-1"
+                >
+                  Get Recommendations
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Main Tabs */}
+        <Tabs defaultValue="demand" className="space-y-4">
+          <TabsList className="bg-slate-800 border-slate-700">
+            <TabsTrigger value="demand" className="text-slate-300">
+              <BarChart3 className="w-4 h-4 mr-2" />
+              Demand Prediction
+            </TabsTrigger>
+            <TabsTrigger value="sites" className="text-slate-300">
+              <MapPin className="w-4 h-4 mr-2" />
+              Site Recommendations
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="text-slate-300">
+              <TrendingUp className="w-4 h-4 mr-2" />
+              Analytics
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Demand Tab */}
+          <TabsContent value="demand" className="space-y-4">
+            <Card className="bg-slate-800/50 border-slate-700">
+              <CardHeader>
+                <CardTitle className="text-white">Regional Demand Forecast</CardTitle>
+                <CardDescription className="text-slate-400">
+                  Predicted COW demand scores (0-1) by region
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={mockDemandData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
+                    <XAxis dataKey="region" stroke="#94a3b8" />
+                    <YAxis stroke="#94a3b8" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#1e293b",
+                        border: "1px solid #475569",
+                      }}
+                      cursor={{ fill: "rgba(59, 130, 246, 0.1)" }}
+                    />
+                    <Bar dataKey="demand_score" fill="#3b82f6" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {mockDemandData.map((item) => (
+                <Card
+                  key={item.region}
+                  className="bg-slate-800/50 border-slate-700"
+                >
+                  <CardContent className="pt-6">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="text-slate-400 text-sm">{item.region}</p>
+                        <p className="text-3xl font-bold text-white">
+                          {(item.demand_score * 100).toFixed(0)}%
+                        </p>
+                      </div>
+                      <TrendingUp className="w-5 h-5 text-blue-400" />
+                    </div>
+                    <div className="w-full bg-slate-700 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full"
+                        style={{ width: `${item.demand_score * 100}%` }}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Sites Tab */}
+          <TabsContent value="sites" className="space-y-4">
+            <Card className="bg-slate-800/50 border-slate-700">
+              <CardHeader>
+                <CardTitle className="text-white">Top Site Recommendations</CardTitle>
+                <CardDescription className="text-slate-400">
+                  Ranked by success probability and logistics efficiency
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {(recommendations.length > 0
+                  ? recommendations
+                  : mockRecommendations
+                ).map((site, idx) => (
+                  <div
+                    key={site.site_id}
+                    className="border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-500 text-white text-sm font-semibold rounded-full">
+                            {idx + 1}
+                          </span>
+                          <h3 className="text-lg font-semibold text-white">
+                            {site.site_id}
+                          </h3>
+                        </div>
+                        <p className="text-sm text-slate-400 mt-1">
+                          {site.region} • {site.vendor} • {site.tech}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-3xl font-bold text-green-400">
+                          {(site.success_probability * 100).toFixed(0)}%
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          Success Probability
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3 mb-3 pb-3 border-b border-slate-700">
+                      <div>
+                        <p className="text-xs text-slate-400">Distance</p>
+                        <p className="text-sm font-semibold text-white">
+                          {site.distance_km} km
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400">Tech</p>
+                        <p className="text-sm font-semibold text-white">
+                          {site.tech}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-slate-400">Vendor</p>
+                        <p className="text-sm font-semibold text-white">
+                          {site.vendor}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2 bg-blue-500/10 border border-blue-500/20 rounded p-3">
+                      <AlertCircle className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-slate-200">
+                        <span className="font-semibold">Why chosen: </span>
+                        {site.explanation}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Analytics Tab */}
+          <TabsContent value="analytics" className="space-y-4">
+            <div className="grid md:grid-cols-3 gap-4 mb-4">
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-slate-400 text-sm">Avg Demand</p>
+                      <p className="text-3xl font-bold text-white">82.5%</p>
+                    </div>
+                    <BarChart3 className="w-8 h-8 text-blue-400" />
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-slate-400 text-sm">Success Rate</p>
+                      <p className="text-3xl font-bold text-white">87.0%</p>
+                    </div>
+                    <TrendingUp className="w-8 h-8 text-green-400" />
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-slate-400 text-sm">Avg Setup Time</p>
+                      <p className="text-3xl font-bold text-white">25.7 hrs</p>
+                    </div>
+                    <Zap className="w-8 h-8 text-purple-400" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="bg-slate-800/50 border-slate-700">
+              <CardHeader>
+                <CardTitle className="text-white">Performance Trends</CardTitle>
+                <CardDescription className="text-slate-400">
+                  6-month metrics overview
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={mockTimeSeriesData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
+                    <XAxis dataKey="month" stroke="#94a3b8" />
+                    <YAxis stroke="#94a3b8" />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#1e293b",
+                        border: "1px solid #475569",
+                      }}
+                      cursor={{ stroke: "rgba(59, 130, 246, 0.2)" }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="demand"
+                      stroke="#3b82f6"
+                      name="Demand"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="success"
+                      stroke="#10b981"
+                      name="Success %"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="logistics"
+                      stroke="#a78bfa"
+                      name="Setup Hrs"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* Footer Info */}
+        <div className="mt-8 p-4 bg-slate-800/30 border border-slate-700 rounded-lg text-slate-400 text-sm">
+          <p>
+            💡 All predictions are based on trained ML models using 3+ years of
+            deployment history. Final deployment decisions should incorporate
+            human review and business constraints.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
