@@ -59,6 +59,95 @@ const datasetTypes = [
 ];
 
 export default function DataManagement() {
+  const [uploadStatus, setUploadStatus] = useState<{
+    type: "success" | "error" | "loading" | null;
+    message: string;
+    dataType?: string;
+  }>({ type: null, message: "" });
+  const [cowAssetsCount, setCowAssetsCount] = useState(0);
+  const [movementsCount, setMovementsCount] = useState(0);
+  const [lastUpdated, setLastUpdated] = useState("");
+
+  const loadDataFromStore = () => {
+    const assets = DataStoreManager.getCOWAssets();
+    const movements = DataStoreManager.getMovements();
+    const updated = DataStoreManager.getLastUpdated();
+
+    setCowAssetsCount(assets.length);
+    setMovementsCount(movements.length);
+    setLastUpdated(updated);
+  };
+
+  const handleLoadSampleData = async () => {
+    setUploadStatus({ type: "loading", message: "Loading sample data..." });
+
+    try {
+      DataStoreManager.importCOWAssets(SAMPLE_COW_ASSETS, "sample");
+      DataStoreManager.importMovements(SAMPLE_MOVEMENTS, "sample");
+
+      setCowAssetsCount(SAMPLE_COW_ASSETS.length);
+      setMovementsCount(SAMPLE_MOVEMENTS.length);
+      setLastUpdated(new Date().toISOString());
+
+      setUploadStatus({
+        type: "success",
+        message: `Sample data loaded: ${SAMPLE_COW_ASSETS.length} COW assets and ${SAMPLE_MOVEMENTS.length} movement records`,
+      });
+
+      setTimeout(() => setUploadStatus({ type: null, message: "" }), 5000);
+    } catch (error) {
+      setUploadStatus({
+        type: "error",
+        message: error instanceof Error ? error.message : "Failed to load sample data",
+      });
+    }
+  };
+
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+    dataType: "cow" | "movement"
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploadStatus({ type: "loading", message: `Processing ${dataType} file...` });
+
+    try {
+      const text = await file.text();
+
+      if (dataType === "cow") {
+        const assets = DataParser.parseCOWMasterFromCSV(text);
+        DataStoreManager.importCOWAssets(assets, "uploaded");
+        setCowAssetsCount(assets.length);
+
+        setUploadStatus({
+          type: "success",
+          message: `COW Master: ${assets.length} assets uploaded successfully`,
+          dataType: "cow",
+        });
+      } else {
+        const movements = DataParser.parseMovementArchiveFromCSV(text);
+        DataStoreManager.importMovements(movements, "uploaded");
+        setMovementsCount(movements.length);
+
+        setUploadStatus({
+          type: "success",
+          message: `Movement Archive: ${movements.length} records uploaded successfully`,
+          dataType: "movement",
+        });
+      }
+
+      setLastUpdated(new Date().toISOString());
+      setTimeout(() => setUploadStatus({ type: null, message: "" }), 5000);
+    } catch (error) {
+      setUploadStatus({
+        type: "error",
+        message: error instanceof Error ? error.message : "Failed to process file",
+        dataType,
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-stc-lilac">
       <Navigation />
