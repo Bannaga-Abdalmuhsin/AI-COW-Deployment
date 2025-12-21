@@ -149,23 +149,23 @@ export default function Index() {
 
         {/* Data Requirements */}
         <div className="mb-24">
-          <h2 className="text-3xl font-bold text-white mb-12 text-center">
+          <h2 className="text-3xl font-bold text-stc-purple-dark mb-12 text-center">
             What You Need
           </h2>
-          <p className="text-slate-300 text-center mb-8">
+          <p className="text-gray-600 text-center mb-8">
             Prepare 5 clean data tables to train our ML models
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
             {dataRequirements.map((req, idx) => (
               <div
                 key={idx}
-                className="bg-slate-800/50 border border-slate-700 rounded-lg p-4"
+                className="bg-white border border-stc-purple/10 rounded-lg p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                  <h4 className="font-semibold text-white">{req.table}</h4>
+                  <div className="w-2 h-2 bg-stc-purple rounded-full"></div>
+                  <h4 className="font-semibold text-stc-purple-dark">{req.table}</h4>
                 </div>
-                <p className="text-slate-400 text-sm">{req.rows}</p>
+                <p className="text-gray-600 text-sm">{req.rows}</p>
               </div>
             ))}
           </div>
