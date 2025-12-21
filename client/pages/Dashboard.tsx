@@ -172,15 +172,15 @@ export default function Dashboard() {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold text-stc-purple-dark">
-                COW Deployment Dashboard
+                COW Asset Distribution
               </h1>
               <p className="text-gray-600 mt-1">
-                AI-powered predictions and recommendations
+                Current asset locations and regional inventory
               </p>
             </div>
             <div className="flex items-center gap-2 bg-stc-purple text-white px-4 py-2 rounded-lg shadow-md">
-              <Zap className="w-4 h-4" />
-              <span className="text-sm font-medium">ML Active</span>
+              <MapPin className="w-4 h-4" />
+              <span className="text-sm font-medium">Live Distribution</span>
             </div>
           </div>
         </div>
