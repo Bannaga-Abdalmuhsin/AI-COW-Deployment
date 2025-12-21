@@ -331,33 +331,33 @@ export default function Dashboard() {
                 ).map((site, idx) => (
                   <div
                     key={site.site_id}
-                    className="border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-colors"
+                    className="border border-stc-purple/10 rounded-lg p-4 hover:border-stc-purple/20 transition-colors"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-500 text-white text-sm font-semibold rounded-full">
+                          <span className="inline-flex items-center justify-center w-6 h-6 bg-stc-purple text-white text-sm font-semibold rounded-full">
                             {idx + 1}
                           </span>
-                          <h3 className="text-lg font-semibold text-white">
+                          <h3 className="text-lg font-semibold text-stc-purple-dark">
                             {site.site_id}
                           </h3>
                         </div>
-                        <p className="text-sm text-slate-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {site.region} • {site.vendor} • {site.tech}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-3xl font-bold text-green-400">
+                        <p className="text-3xl font-bold text-success">
                           {(site.success_probability * 100).toFixed(0)}%
                         </p>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-gray-600">
                           Success Probability
                         </p>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-3 gap-3 mb-3 pb-3 border-b border-slate-700">
+                    <div className="grid grid-cols-3 gap-3 mb-3 pb-3 border-b border-stc-purple/10">
                       <div>
                         <p className="text-xs text-slate-400">Distance</p>
                         <p className="text-sm font-semibold text-white">
@@ -378,9 +378,9 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-2 bg-blue-500/10 border border-blue-500/20 rounded p-3">
-                      <AlertCircle className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <p className="text-sm text-slate-200">
+                    <div className="flex items-start gap-2 bg-stc-purple/10 border border-stc-purple/20 rounded p-3">
+                      <AlertCircle className="w-4 h-4 text-stc-purple flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-stc-purple-dark">
                         <span className="font-semibold">Why chosen: </span>
                         {site.explanation}
                       </p>
