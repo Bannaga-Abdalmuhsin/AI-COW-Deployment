@@ -222,15 +222,15 @@ export default function Index() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl p-12 text-center">
+        <div className="bg-gradient-to-r from-stc-purple to-stc-purple/90 rounded-xl p-12 text-center shadow-lg">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Optimize Your Deployments?
           </h2>
-          <p className="text-blue-100 mb-8 text-lg">
+          <p className="text-white/90 mb-8 text-lg">
             Start with our interactive dashboard and upload your data today
           </p>
           <Link to="/dashboard">
-            <Button className="bg-white text-blue-600 hover:bg-slate-100 px-8 py-6 text-lg font-semibold">
+            <Button className="bg-white text-stc-purple hover:bg-white/90 px-8 py-6 text-lg font-semibold">
               Launch Dashboard Now
             </Button>
           </Link>
@@ -238,7 +238,7 @@ export default function Index() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800 bg-slate-950 py-12 mt-24">
+      <footer className="border-t border-stc-purple/20 bg-stc-lilac py-12 mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-8 mb-8">
             <div className="flex items-center gap-6 flex-wrap justify-center">
@@ -247,14 +247,14 @@ export default function Index() {
                 alt="STC Logo"
                 className="h-8"
               />
-              <div className="hidden sm:block h-8 w-px bg-slate-700"></div>
+              <div className="hidden sm:block h-8 w-px bg-stc-purple/20"></div>
               <img
                 src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fed947135ce9d4b3a8b599f5a859cf435?format=webp&width=300"
                 alt="ACES Managed Services Logo"
                 className="h-8"
               />
             </div>
-            <p className="text-center text-slate-400">
+            <p className="text-center text-gray-600">
               COW Deploy AI • ML-Powered Cell on Wheels Deployment Optimization
             </p>
           </div>
