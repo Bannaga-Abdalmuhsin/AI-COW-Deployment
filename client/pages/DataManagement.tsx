@@ -194,47 +194,180 @@ export default function DataManagement() {
           </CardContent>
         </Card>
 
+        {/* Upload Status */}
+        {uploadStatus.type && (
+          <div
+            className={`mb-6 p-4 rounded-lg border flex items-start gap-3 ${
+              uploadStatus.type === "success"
+                ? "bg-success/10 border-success/20 text-success"
+                : uploadStatus.type === "error"
+                  ? "bg-red-100/10 border-red-200/20 text-red-600"
+                  : "bg-blue-100/10 border-blue-200/20 text-blue-600"
+            }`}
+          >
+            {uploadStatus.type === "success" ? (
+              <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
+            ) : uploadStatus.type === "error" ? (
+              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+            ) : (
+              <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin flex-shrink-0 mt-0.5" />
+            )}
+            <p className="text-sm">{uploadStatus.message}</p>
+          </div>
+        )}
+
+        {/* Data Summary */}
+        {(cowAssetsCount > 0 || movementsCount > 0) && (
+          <Card className="bg-white border-stc-purple/10 mb-8 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-stc-purple-dark">Data Summary</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-success flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-gray-600">COW Assets</p>
+                    <p className="text-2xl font-bold text-stc-purple-dark">
+                      {cowAssetsCount}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-success flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-gray-600">Movement Records</p>
+                    <p className="text-2xl font-bold text-stc-purple-dark">
+                      {movementsCount}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-6 h-6 text-success flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-gray-600">Last Updated</p>
+                    <p className="text-sm font-semibold text-stc-purple-dark">
+                      {lastUpdated
+                        ? new Date(lastUpdated).toLocaleDateString()
+                        : "—"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Data Tables */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {datasetTypes.map((dataset) => (
-            <Card
-              key={dataset.name}
-              className="bg-white border-stc-purple/10 flex flex-col shadow-sm"
-            >
-              <CardHeader>
-                <div className="flex items-start justify-between mb-2">
-                  <CardTitle className="text-stc-purple-dark text-lg">
-                    {dataset.name}
-                  </CardTitle>
-                  <Database className="w-5 h-5 text-stc-purple flex-shrink-0" />
-                </div>
-                <CardDescription className="text-gray-600">
-                  {dataset.description}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col">
-                <div className="mb-4 flex-1">
-                  <p className="text-xs font-semibold text-stc-purple-dark mb-2 uppercase">
-                    Columns
-                  </p>
-                  <ul className="space-y-1">
-                    {dataset.columns.map((col) => (
-                      <li
-                        key={col}
-                        className="text-xs text-gray-600 flex items-center gap-2"
-                      >
-                        <span className="w-1 h-1 bg-stc-purple rounded-full"></span>
-                        {col}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <Button className="w-full bg-stc-purple hover:bg-stc-purple/90 text-white">
-                  Upload {dataset.name}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* COW Master Card */}
+          <Card className="bg-white border-stc-purple/10 flex flex-col shadow-sm">
+            <CardHeader>
+              <div className="flex items-start justify-between mb-2">
+                <CardTitle className="text-stc-purple-dark text-lg">
+                  {datasetTypes[0].name}
+                </CardTitle>
+                <Database className="w-5 h-5 text-stc-purple flex-shrink-0" />
+              </div>
+              <CardDescription className="text-gray-600">
+                {datasetTypes[0].description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col">
+              <div className="mb-4 flex-1">
+                <p className="text-xs font-semibold text-stc-purple-dark mb-2 uppercase">
+                  Columns
+                </p>
+                <ul className="space-y-1">
+                  {datasetTypes[0].columns.map((col) => (
+                    <li
+                      key={col}
+                      className="text-xs text-gray-600 flex items-center gap-2"
+                    >
+                      <span className="w-1 h-1 bg-stc-purple rounded-full"></span>
+                      {col}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <label className="block">
+                  <input
+                    type="file"
+                    accept=".csv,.xlsx"
+                    onChange={(e) => handleFileUpload(e, "cow")}
+                    className="hidden"
+                    id="cow-upload"
+                  />
+                  <Button
+                    asChild
+                    className="w-full bg-stc-purple hover:bg-stc-purple/90 text-white cursor-pointer"
+                  >
+                    <label htmlFor="cow-upload" className="cursor-pointer">
+                      Upload {datasetTypes[0].name}
+                    </label>
+                  </Button>
+                </label>
+                <Button
+                  onClick={handleLoadSampleData}
+                  variant="outline"
+                  className="w-full border-stc-purple text-stc-purple hover:bg-stc-purple/10"
+                >
+                  Load Sample Data
                 </Button>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Movement Archive Card */}
+          <Card className="bg-white border-stc-purple/10 flex flex-col shadow-sm">
+            <CardHeader>
+              <div className="flex items-start justify-between mb-2">
+                <CardTitle className="text-stc-purple-dark text-lg">
+                  {datasetTypes[1].name}
+                </CardTitle>
+                <Database className="w-5 h-5 text-stc-purple flex-shrink-0" />
+              </div>
+              <CardDescription className="text-gray-600">
+                {datasetTypes[1].description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 flex flex-col">
+              <div className="mb-4 flex-1">
+                <p className="text-xs font-semibold text-stc-purple-dark mb-2 uppercase">
+                  Columns
+                </p>
+                <ul className="space-y-1">
+                  {datasetTypes[1].columns.map((col) => (
+                    <li
+                      key={col}
+                      className="text-xs text-gray-600 flex items-center gap-2"
+                    >
+                      <span className="w-1 h-1 bg-stc-purple rounded-full"></span>
+                      {col}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <label className="block">
+                <input
+                  type="file"
+                  accept=".csv,.xlsx"
+                  onChange={(e) => handleFileUpload(e, "movement")}
+                  className="hidden"
+                  id="movement-upload"
+                />
+                <Button
+                  asChild
+                  className="w-full bg-stc-purple hover:bg-stc-purple/90 text-white cursor-pointer"
+                >
+                  <label htmlFor="movement-upload" className="cursor-pointer">
+                    Upload {datasetTypes[1].name}
+                  </label>
+                </Button>
+              </label>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Future ML Training Guide */}
