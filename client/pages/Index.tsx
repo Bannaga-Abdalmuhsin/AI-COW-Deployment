@@ -108,13 +108,13 @@ export default function Index() {
             return (
               <div
                 key={idx}
-                className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:border-slate-600 transition-colors"
+                className="bg-white border border-stc-purple/10 rounded-lg p-6 hover:shadow-lg transition-all hover:border-stc-purple/30"
               >
-                <Icon className="w-8 h-8 text-blue-400 mb-4" />
-                <h3 className="text-lg font-semibold text-white mb-2">
+                <Icon className="w-8 h-8 text-stc-purple mb-4" />
+                <h3 className="text-lg font-semibold text-stc-purple-dark mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-slate-400 text-sm">{feature.description}</p>
+                <p className="text-gray-600 text-sm">{feature.description}</p>
               </div>
             );
           })}
