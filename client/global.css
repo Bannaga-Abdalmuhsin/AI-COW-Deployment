@@ -12,51 +12,63 @@
    * A different format will require also updating the theme in tailwind.config.ts.
   */
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 210 40% 98%;
+    /* STC Brand Colors */
+    --stc-purple: 280 53% 36%;
+    --stc-purple-dark: 270 53% 26%;
+    --stc-lavender: 280 55% 69%;
+    --stc-lilac-bg: 270 67% 96%;
 
-    --card: 240 10% 8%;
-    --card-foreground: 210 40% 98%;
+    /* Backgrounds & Surfaces */
+    --background: 270 67% 96%;
+    --foreground: 0 0% 12%;
 
-    --popover: 240 10% 8%;
-    --popover-foreground: 210 40% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
 
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 12%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Primary Actions - STC Purple */
+    --primary: 280 53% 36%;
+    --primary-foreground: 0 0% 100%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Secondary */
+    --secondary: 280 55% 69%;
+    --secondary-foreground: 0 0% 12%;
 
-    --accent: 217.2 91.2% 59.8%;
-    --accent-foreground: 240 10% 3.9%;
+    /* Muted */
+    --muted: 270 35% 89%;
+    --muted-foreground: 0 0% 42%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    /* Accents */
+    --accent: 280 53% 36%;
+    --accent-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* Status Colors (Telecom-friendly) */
+    --success: 147 62% 44%;
+    --warning: 35 90% 55%;
+    --critical: 355 98% 41%;
+    --info: 217 80% 59%;
+
+    --destructive: 355 98% 41%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders & Input */
+    --border: 270 35% 89%;
+    --input: 0 0% 100%;
+    --ring: 280 53% 36%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 240 10% 8%;
-
-    --sidebar-foreground: 240 4.8% 95.9%;
-
-    --sidebar-primary: 217.2 91.2% 59.8%;
-
-    --sidebar-primary-foreground: 240 10% 3.9%;
-
-    --sidebar-accent: 240 3.7% 15.9%;
-
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-
-    --sidebar-border: 240 3.7% 15.9%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar */
+    --sidebar-background: 270 53% 26%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 280 53% 36%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 280 55% 69%;
+    --sidebar-accent-foreground: 0 0% 12%;
+    --sidebar-border: 270 35% 89%;
+    --sidebar-ring: 280 53% 36%;
   }
 
   .dark {
