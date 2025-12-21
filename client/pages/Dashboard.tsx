@@ -248,7 +248,7 @@ export default function Dashboard() {
               <MapPin className="w-4 h-4 mr-2" />
               Site Recommendations
             </TabsTrigger>
-            <TabsTrigger value="analytics" className="text-slate-300">
+            <TabsTrigger value="analytics" className="text-gray-600 data-[state=active]:text-stc-purple">
               <TrendingUp className="w-4 h-4 mr-2" />
               Analytics
             </TabsTrigger>
