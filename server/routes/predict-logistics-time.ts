@@ -24,7 +24,14 @@ export interface PredictLogisticsTimeResponse {
 }
 
 export const handlePredictLogisticsTime: RequestHandler = (req, res) => {
-  const { warehouse_id, site_id, distance_km = 20, region = "KSA", tower_height = 40, vsat = false } = req.body as PredictLogisticsTimeRequest;
+  const {
+    warehouse_id,
+    site_id,
+    distance_km = 20,
+    region = "KSA",
+    tower_height = 40,
+    vsat = false,
+  } = req.body as PredictLogisticsTimeRequest;
 
   if (!warehouse_id || !site_id) {
     return res.status(400).json({

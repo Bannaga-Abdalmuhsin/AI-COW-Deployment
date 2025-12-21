@@ -33,7 +33,7 @@ export const handlePredictSiteSuccess: RequestHandler = (req, res) => {
 
   // Mock site database
   const mockSites: Record<string, SiteRecommendation[]> = {
-    "Riyadh": [
+    Riyadh: [
       {
         site_id: "SITE-RYD-001",
         region: "Riyadh",
@@ -65,7 +65,7 @@ export const handlePredictSiteSuccess: RequestHandler = (req, res) => {
           "Closest warehouse location, but lower tech capability. Still viable for 4G deployment",
       },
     ],
-    "Jeddah": [
+    Jeddah: [
       {
         site_id: "SITE-JED-001",
         region: "Jeddah",
@@ -87,7 +87,7 @@ export const handlePredictSiteSuccess: RequestHandler = (req, res) => {
           "Reliable vendor, adequate distance from warehouse, good tower specifications",
       },
     ],
-    "Dammam": [
+    Dammam: [
       {
         site_id: "SITE-DAM-001",
         region: "Dammam",
@@ -99,7 +99,7 @@ export const handlePredictSiteSuccess: RequestHandler = (req, res) => {
           "Very close to warehouse, modern 5G infrastructure, proven in industrial zones",
       },
     ],
-    "Mecca": [
+    Mecca: [
       {
         site_id: "SITE-MEC-001",
         region: "Mecca",
@@ -111,7 +111,7 @@ export const handlePredictSiteSuccess: RequestHandler = (req, res) => {
           "Premium location for religious events, highest success probability, full infrastructure support",
       },
     ],
-    "Medina": [
+    Medina: [
       {
         site_id: "SITE-MED-001",
         region: "Medina",
@@ -135,7 +135,7 @@ export const handlePredictSiteSuccess: RequestHandler = (req, res) => {
     Incident: 0.85,
   };
 
-  const multiplier = eventMultiplier[event_type] || 0.90;
+  const multiplier = eventMultiplier[event_type] || 0.9;
 
   const adjustedRecommendations = recommendations
     .map((site) => ({

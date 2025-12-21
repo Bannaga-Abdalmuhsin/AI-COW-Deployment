@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   LineChart,
@@ -41,7 +47,9 @@ interface LogisticsPrediction {
 
 export default function Dashboard() {
   const [demandData, setDemandData] = useState<DemandPrediction[]>([]);
-  const [recommendations, setRecommendations] = useState<SiteRecommendation[]>([]);
+  const [recommendations, setRecommendations] = useState<SiteRecommendation[]>(
+    [],
+  );
   const [logisticsData, setLogisticsData] = useState<LogisticsPrediction[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState("KSA");
@@ -247,7 +255,9 @@ export default function Dashboard() {
           <TabsContent value="demand" className="space-y-4">
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
-                <CardTitle className="text-white">Regional Demand Forecast</CardTitle>
+                <CardTitle className="text-white">
+                  Regional Demand Forecast
+                </CardTitle>
                 <CardDescription className="text-slate-400">
                   Predicted COW demand scores (0-1) by region
                 </CardDescription>
@@ -303,7 +313,9 @@ export default function Dashboard() {
           <TabsContent value="sites" className="space-y-4">
             <Card className="bg-slate-800/50 border-slate-700">
               <CardHeader>
-                <CardTitle className="text-white">Top Site Recommendations</CardTitle>
+                <CardTitle className="text-white">
+                  Top Site Recommendations
+                </CardTitle>
                 <CardDescription className="text-slate-400">
                   Ranked by success probability and logistics efficiency
                 </CardDescription>

@@ -97,8 +97,8 @@ export default function Index() {
             AI-Powered COW Deployment Planning
           </h1>
           <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            Predict demand, optimize site selection, and ensure deployment success
-            with machine learning-driven recommendations
+            Predict demand, optimize site selection, and ensure deployment
+            success with machine learning-driven recommendations
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link to="/dashboard">
@@ -207,7 +207,9 @@ export default function Index() {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <CheckCircle2 className="w-6 h-6 text-blue-400" />
-                <h3 className="font-semibold text-white">Site Success Scoring</h3>
+                <h3 className="font-semibold text-white">
+                  Site Success Scoring
+                </h3>
               </div>
               <p className="text-slate-300 text-sm mb-4">
                 Predicts deployment success probability considering site vendor,
