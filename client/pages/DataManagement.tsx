@@ -67,17 +67,17 @@ const datasetTypes = [
 
 export default function DataManagement() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 to-slate-900">
+    <div className="min-h-screen bg-stc-lilac">
       <Navigation />
 
       {/* Page Header */}
-      <div className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-sm">
+      <div className="border-b border-stc-purple/10 bg-white/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div>
-            <h1 className="text-3xl font-bold text-white">
+            <h1 className="text-3xl font-bold text-stc-purple-dark">
               Data Management
             </h1>
-            <p className="text-slate-400 mt-1">
+            <p className="text-gray-600 mt-1">
               Upload and manage your deployment data
             </p>
           </div>
