@@ -175,23 +175,23 @@ export default function Dashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Control Panel */}
-        <Card className="bg-slate-800/50 border-slate-700 mb-8">
+        <Card className="bg-white border-stc-purple/10 mb-8 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-white">Prediction Controls</CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardTitle className="text-stc-purple-dark">Prediction Controls</CardTitle>
+            <CardDescription className="text-gray-600">
               Select region and event type to generate predictions
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="text-sm font-medium text-slate-300 block mb-2">
+                <label className="text-sm font-medium text-gray-700 block mb-2">
                   Region
                 </label>
                 <select
                   value={selectedRegion}
                   onChange={(e) => setSelectedRegion(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-md"
+                  className="w-full px-3 py-2 bg-white border border-stc-purple/20 text-gray-900 rounded-md focus:border-stc-purple focus:ring-stc-purple"
                 >
                   <option>KSA</option>
                   <option>Riyadh</option>
@@ -201,13 +201,13 @@ export default function Dashboard() {
                 </select>
               </div>
               <div>
-                <label className="text-sm font-medium text-slate-300 block mb-2">
+                <label className="text-sm font-medium text-gray-700 block mb-2">
                   Event Type
                 </label>
                 <select
                   value={selectedEventType}
                   onChange={(e) => setSelectedEventType(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-700 border border-slate-600 text-white rounded-md"
+                  className="w-full px-3 py-2 bg-white border border-stc-purple/20 text-gray-900 rounded-md focus:border-stc-purple focus:ring-stc-purple"
                 >
                   <option>Religious</option>
                   <option>Sport</option>
