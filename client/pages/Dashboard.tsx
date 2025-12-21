@@ -256,29 +256,30 @@ export default function Dashboard() {
 
           {/* Demand Tab */}
           <TabsContent value="demand" className="space-y-4">
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-white border-stc-purple/10 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-white">
+                <CardTitle className="text-stc-purple-dark">
                   Regional Demand Forecast
                 </CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-gray-600">
                   Predicted COW demand scores (0-1) by region
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={mockDemandData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#475569" />
-                    <XAxis dataKey="region" stroke="#94a3b8" />
-                    <YAxis stroke="#94a3b8" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5DCEC" />
+                    <XAxis dataKey="region" stroke="#6B6B6B" />
+                    <YAxis stroke="#6B6B6B" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: "#1e293b",
-                        border: "1px solid #475569",
+                        backgroundColor: "#F6F0FA",
+                        border: "1px solid #E5DCEC",
+                        color: "#1F1F1F"
                       }}
-                      cursor={{ fill: "rgba(59, 130, 246, 0.1)" }}
+                      cursor={{ fill: "rgba(110, 43, 140, 0.1)" }}
                     />
-                    <Bar dataKey="demand_score" fill="#3b82f6" />
+                    <Bar dataKey="demand_score" fill="#6E2B8C" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -288,21 +289,21 @@ export default function Dashboard() {
               {mockDemandData.map((item) => (
                 <Card
                   key={item.region}
-                  className="bg-slate-800/50 border-slate-700"
+                  className="bg-white border-stc-purple/10 shadow-sm"
                 >
                   <CardContent className="pt-6">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <p className="text-slate-400 text-sm">{item.region}</p>
-                        <p className="text-3xl font-bold text-white">
+                        <p className="text-gray-600 text-sm">{item.region}</p>
+                        <p className="text-3xl font-bold text-stc-purple-dark">
                           {(item.demand_score * 100).toFixed(0)}%
                         </p>
                       </div>
-                      <TrendingUp className="w-5 h-5 text-blue-400" />
+                      <TrendingUp className="w-5 h-5 text-stc-purple" />
                     </div>
-                    <div className="w-full bg-slate-700 rounded-full h-2">
+                    <div className="w-full bg-stc-lilac rounded-full h-2">
                       <div
-                        className="bg-blue-500 h-2 rounded-full"
+                        className="bg-stc-purple h-2 rounded-full"
                         style={{ width: `${item.demand_score * 100}%` }}
                       />
                     </div>
@@ -314,12 +315,12 @@ export default function Dashboard() {
 
           {/* Sites Tab */}
           <TabsContent value="sites" className="space-y-4">
-            <Card className="bg-slate-800/50 border-slate-700">
+            <Card className="bg-white border-stc-purple/10 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-white">
+                <CardTitle className="text-stc-purple-dark">
                   Top Site Recommendations
                 </CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-gray-600">
                   Ranked by success probability and logistics efficiency
                 </CardDescription>
               </CardHeader>
