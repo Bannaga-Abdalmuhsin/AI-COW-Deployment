@@ -53,56 +53,93 @@ export default function Dashboard() {
   const [selectedRegion, setSelectedRegion] = useState("KSA");
   const [selectedVendor, setSelectedVendor] = useState("All");
 
-  // Mock demand data for visualization
-  const mockDemandData = [
-    { region: "Riyadh", date: "2024-01", demand_score: 0.75 },
-    { region: "Jeddah", date: "2024-01", demand_score: 0.62 },
-    { region: "Dammam", date: "2024-01", demand_score: 0.48 },
-    { region: "Mecca", date: "2024-01", demand_score: 0.92 },
-    { region: "Medina", date: "2024-01", demand_score: 0.85 },
-  ];
-
-  const mockRecommendations: SiteRecommendation[] = [
+  // Sample COW distribution data
+  const mockCOWData: COWAsset[] = [
     {
-      site_id: "SITE-001",
+      cowid: "COW001",
+      site_label: "Riyadh Central",
       region: "Riyadh",
-      success_probability: 0.94,
+      district: "Central",
+      city: "Riyadh",
+      latitude: 24.7136,
+      longitude: 46.6753,
       vendor: "Ericsson",
-      tech: "5G",
-      distance_km: 12,
-      explanation:
-        "High success rate (94%), compatible vendor, nearest warehouse, proven 5G deployment history",
+      shelter_outdoor: "Outdoor",
+      last_deploying_date: "2024-01-15",
+      remarks: "Active, excellent signal",
     },
     {
-      site_id: "SITE-002",
-      region: "Riyadh",
-      success_probability: 0.87,
-      vendor: "Nokia",
-      tech: "4G/5G",
-      distance_km: 18,
-      explanation:
-        "Strong vendor match, adequate tower height, VSAT capable, 87% historical success",
-    },
-    {
-      site_id: "SITE-003",
+      cowid: "COW002",
+      site_label: "Jeddah North",
       region: "Jeddah",
-      success_probability: 0.79,
+      district: "North",
+      city: "Jeddah",
+      latitude: 21.5921,
+      longitude: 39.1721,
+      vendor: "Nokia",
+      shelter_outdoor: "Shelter",
+      last_deploying_date: "2024-01-10",
+      remarks: "Under maintenance",
+    },
+    {
+      cowid: "COW003",
+      site_label: "Dammam East",
+      region: "Dammam",
+      district: "East",
+      city: "Dammam",
+      latitude: 26.3954,
+      longitude: 50.1957,
       vendor: "Huawei",
-      tech: "4G",
-      distance_km: 8,
-      explanation:
-        "Closest warehouse location, but lower tech capability. Still viable for 4G deployment",
+      shelter_outdoor: "Outdoor",
+      last_deploying_date: "2024-01-20",
+      remarks: "Ready for deployment",
+    },
+    {
+      cowid: "COW004",
+      site_label: "Riyadh South",
+      region: "Riyadh",
+      district: "South",
+      city: "Riyadh",
+      latitude: 24.6282,
+      longitude: 46.7104,
+      vendor: "Ericsson",
+      shelter_outdoor: "Shelter",
+      last_deploying_date: "2024-01-18",
+      remarks: "Active deployment",
+    },
+    {
+      cowid: "COW005",
+      site_label: "Mecca Al Haram",
+      region: "Mecca",
+      district: "Central",
+      city: "Mecca",
+      latitude: 21.4225,
+      longitude: 39.8262,
+      vendor: "Nokia",
+      shelter_outdoor: "Outdoor",
+      last_deploying_date: "2024-01-12",
+      remarks: "Recent event deployment",
     },
   ];
 
-  const mockTimeSeriesData = [
-    { month: "Jan", demand: 65, success: 78, logistics: 24 },
-    { month: "Feb", demand: 75, success: 82, logistics: 22 },
-    { month: "Mar", demand: 68, success: 85, logistics: 28 },
-    { month: "Apr", demand: 82, success: 80, logistics: 26 },
-    { month: "May", demand: 88, success: 87, logistics: 25 },
-    { month: "Jun", demand: 92, success: 91, logistics: 27 },
-  ];
+  // Calculate regional statistics
+  const calculateRegionalStats = (data: COWAsset[]): RegionalStats[] => {
+    const regions = new Map<string, COWAsset[]>();
+    data.forEach((cow) => {
+      if (!regions.has(cow.region)) {
+        regions.set(cow.region, []);
+      }
+      regions.get(cow.region)!.push(cow);
+    });
+
+    return Array.from(regions.entries()).map(([region, cows]) => ({
+      region,
+      total_cows: cows.length,
+      vendors: [...new Set(cows.map((c) => c.vendor))],
+      avg_lat: cows.reduce((sum, c) => sum + c.latitude, 0) / cows.length,
+      avg_lon: cows.reduce((sum, c) => sum + c.longitude, 0) / cows.length,
+    }));
+  };
 
   const handlePredictDemand = async () => {
     setLoading(true);
