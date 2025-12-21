@@ -279,63 +279,95 @@ export default function Dashboard() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Demand Tab */}
-          <TabsContent value="demand" className="space-y-4">
+          {/* Distribution Tab */}
+          <TabsContent value="distribution" className="space-y-4">
             <Card className="bg-white border-stc-purple/10 shadow-sm">
               <CardHeader>
                 <CardTitle className="text-stc-purple-dark">
-                  Regional Demand Forecast
+                  Current COW Distribution
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                  Predicted COW demand scores (0-1) by region
+                  All active COW assets and their current locations ({filteredCOWData.length} assets)
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={mockDemandData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E5DCEC" />
-                    <XAxis dataKey="region" stroke="#6B6B6B" />
-                    <YAxis stroke="#6B6B6B" />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#F6F0FA",
-                        border: "1px solid #E5DCEC",
-                        color: "#1F1F1F",
-                      }}
-                      cursor={{ fill: "rgba(110, 43, 140, 0.1)" }}
-                    />
-                    <Bar dataKey="demand_score" fill="#6E2B8C" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+              <CardContent className="space-y-3">
+                {filteredCOWData.length > 0 ? (
+                  filteredCOWData.map((cow, idx) => (
+                    <div
+                      key={cow.cowid}
+                      className="border border-stc-purple/10 rounded-lg p-4 hover:border-stc-purple/20 transition-colors"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="inline-flex items-center justify-center w-6 h-6 bg-stc-purple text-white text-sm font-semibold rounded-full">
+                              {idx + 1}
+                            </span>
+                            <h3 className="text-lg font-semibold text-stc-purple-dark">
+                              {cow.cowid}
+                            </h3>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {cow.site_label}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p
+                            className={`text-xs font-semibold rounded px-2 py-1 ${
+                              cow.shelter_outdoor === "Shelter"
+                                ? "bg-stc-purple/20 text-stc-purple"
+                                : "bg-success/20 text-success"
+                            }`}
+                          >
+                            {cow.shelter_outdoor}
+                          </p>
+                        </div>
+                      </div>
 
-            <div className="grid md:grid-cols-3 gap-4">
-              {mockDemandData.map((item) => (
-                <Card
-                  key={item.region}
-                  className="bg-white border-stc-purple/10 shadow-sm"
-                >
-                  <CardContent className="pt-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className="text-gray-600 text-sm">{item.region}</p>
-                        <p className="text-3xl font-bold text-stc-purple-dark">
-                          {(item.demand_score * 100).toFixed(0)}%
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3 pb-3 border-b border-stc-purple/10">
+                        <div>
+                          <p className="text-xs text-gray-600">Region</p>
+                          <p className="text-sm font-semibold text-stc-purple-dark">
+                            {cow.region}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600">Vendor</p>
+                          <p className="text-sm font-semibold text-stc-purple-dark">
+                            {cow.vendor}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600">Coordinates</p>
+                          <p className="text-sm font-semibold text-stc-purple-dark">
+                            {cow.latitude.toFixed(3)}, {cow.longitude.toFixed(3)}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-600">Last Deploy</p>
+                          <p className="text-sm font-semibold text-stc-purple-dark">
+                            {new Date(cow.last_deploying_date).toLocaleDateString()}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-2 bg-stc-purple/10 border border-stc-purple/20 rounded p-3">
+                        <AlertCircle className="w-4 h-4 text-stc-purple flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-stc-purple-dark">
+                          <span className="font-semibold">Status: </span>
+                          {cow.remarks}
                         </p>
                       </div>
-                      <TrendingUp className="w-5 h-5 text-stc-purple" />
                     </div>
-                    <div className="w-full bg-stc-lilac rounded-full h-2">
-                      <div
-                        className="bg-stc-purple h-2 rounded-full"
-                        style={{ width: `${item.demand_score * 100}%` }}
-                      />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-600">
+                    <p>No COW assets found with selected filters.</p>
+                    <p className="text-sm">Try adjusting your region or vendor filters.</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Sites Tab */}
