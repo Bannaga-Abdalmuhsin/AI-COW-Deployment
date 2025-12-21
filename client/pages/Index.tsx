@@ -122,23 +122,23 @@ export default function Index() {
 
         {/* How It Works */}
         <div className="mb-24">
-          <h2 className="text-3xl font-bold text-white mb-12 text-center">
+          <h2 className="text-3xl font-bold text-stc-purple-dark mb-12 text-center">
             How It Works
           </h2>
           <div className="grid md:grid-cols-4 gap-6">
             {steps.map((step, idx) => (
               <div key={idx} className="relative">
-                <div className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border border-blue-500/30 rounded-lg p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-500 text-white rounded-full font-bold mb-4">
+                <div className="bg-gradient-to-br from-stc-lavender/30 to-stc-purple/20 border border-stc-purple/20 rounded-lg p-6 text-center">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-stc-purple text-white rounded-full font-bold mb-4">
                     {step.number}
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
+                  <h3 className="text-lg font-semibold text-stc-purple-dark mb-2">
                     {step.title}
                   </h3>
-                  <p className="text-slate-300 text-sm">{step.description}</p>
+                  <p className="text-gray-600 text-sm">{step.description}</p>
                 </div>
                 {idx < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/3 -right-3 text-blue-500/30">
+                  <div className="hidden md:block absolute top-1/3 -right-3 text-stc-purple/30">
                     <ArrowRight className="w-6 h-6" />
                   </div>
                 )}
