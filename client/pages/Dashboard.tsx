@@ -154,13 +154,21 @@ export default function Dashboard() {
       <div className="border-b border-slate-800 bg-slate-950/50 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-3xl font-bold text-white">
-                COW Deployment Dashboard
-              </h1>
-              <p className="text-slate-400 mt-1">
-                AI-powered predictions and recommendations
-              </p>
+            <div className="flex items-center gap-4">
+              <div>
+                <h1 className="text-3xl font-bold text-white">
+                  COW Deployment Dashboard
+                </h1>
+                <p className="text-slate-400 mt-1">
+                  AI-powered predictions and recommendations
+                </p>
+              </div>
+              <div className="hidden sm:block h-12 w-px bg-slate-700"></div>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fc565c09ac98d4bb1923fb8ee199fe98c?format=webp&width=200"
+                alt="STC"
+                className="h-8"
+              />
             </div>
             <div className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg">
               <Zap className="w-4 h-4" />
