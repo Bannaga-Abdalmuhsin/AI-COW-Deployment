@@ -172,49 +172,49 @@ export default function Index() {
         </div>
 
         {/* ML Models Section */}
-        <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-xl p-8 mb-24">
-          <h2 className="text-2xl font-bold text-white mb-8">
+        <div className="bg-gradient-to-br from-stc-lavender/20 to-stc-purple/10 border border-stc-purple/20 rounded-xl p-8 mb-24">
+          <h2 className="text-2xl font-bold text-stc-purple-dark mb-8">
             Three Powerful ML Models
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <BarChart3 className="w-6 h-6 text-blue-400" />
-                <h3 className="font-semibold text-white">Demand Prediction</h3>
+                <BarChart3 className="w-6 h-6 text-stc-purple" />
+                <h3 className="font-semibold text-stc-purple-dark">Demand Prediction</h3>
               </div>
-              <p className="text-slate-300 text-sm mb-4">
+              <p className="text-gray-600 text-sm mb-4">
                 Forecasts COW demand by region and event type based on temporal
                 patterns and historical trends
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-gray-500">
                 Output: demand_score (0–1) | Runs: Monthly
               </p>
             </div>
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6 text-blue-400" />
-                <h3 className="font-semibold text-white">
+                <CheckCircle2 className="w-6 h-6 text-stc-purple" />
+                <h3 className="font-semibold text-stc-purple-dark">
                   Site Success Scoring
                 </h3>
               </div>
-              <p className="text-slate-300 text-sm mb-4">
+              <p className="text-gray-600 text-sm mb-4">
                 Predicts deployment success probability considering site vendor,
                 tech specs, and historical performance
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-gray-500">
                 Output: success_probability (0–1) | Runs: On-demand
               </p>
             </div>
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <TrendingUp className="w-6 h-6 text-blue-400" />
-                <h3 className="font-semibold text-white">Logistics Planning</h3>
+                <TrendingUp className="w-6 h-6 text-stc-purple" />
+                <h3 className="font-semibold text-stc-purple-dark">Logistics Planning</h3>
               </div>
-              <p className="text-slate-300 text-sm mb-4">
+              <p className="text-gray-600 text-sm mb-4">
                 Estimates setup time and logistics risks based on warehouse
                 distance, terrain, and equipment requirements
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-gray-500">
                 Output: predicted_time_hours | Runs: On-demand
               </p>
             </div>
