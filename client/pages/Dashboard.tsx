@@ -476,7 +476,7 @@ export default function Dashboard() {
         </Tabs>
 
         {/* Footer Info */}
-        <div className="mt-8 p-4 bg-slate-800/30 border border-slate-700 rounded-lg text-slate-400 text-sm">
+        <div className="mt-8 p-4 bg-stc-lilac border border-stc-purple/20 rounded-lg text-gray-600 text-sm">
           <p>
             💡 All predictions are based on trained ML models using 3+ years of
             deployment history. Final deployment decisions should incorporate
