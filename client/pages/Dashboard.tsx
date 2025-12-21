@@ -144,7 +144,8 @@ export default function Dashboard() {
   const filteredCOWData = mockCOWData.filter((cow) => {
     const regionMatch =
       selectedRegion === "KSA" || cow.region === selectedRegion;
-    const vendorMatch = selectedVendor === "All" || cow.vendor === selectedVendor;
+    const vendorMatch =
+      selectedVendor === "All" || cow.vendor === selectedVendor;
     return regionMatch && vendorMatch;
   });
 
@@ -287,7 +288,8 @@ export default function Dashboard() {
                   Current COW Distribution
                 </CardTitle>
                 <CardDescription className="text-gray-600">
-                  All active COW assets and their current locations ({filteredCOWData.length} assets)
+                  All active COW assets and their current locations (
+                  {filteredCOWData.length} assets)
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -340,13 +342,16 @@ export default function Dashboard() {
                         <div>
                           <p className="text-xs text-gray-600">Coordinates</p>
                           <p className="text-sm font-semibold text-stc-purple-dark">
-                            {cow.latitude.toFixed(3)}, {cow.longitude.toFixed(3)}
+                            {cow.latitude.toFixed(3)},{" "}
+                            {cow.longitude.toFixed(3)}
                           </p>
                         </div>
                         <div>
                           <p className="text-xs text-gray-600">Last Deploy</p>
                           <p className="text-sm font-semibold text-stc-purple-dark">
-                            {new Date(cow.last_deploying_date).toLocaleDateString()}
+                            {new Date(
+                              cow.last_deploying_date,
+                            ).toLocaleDateString()}
                           </p>
                         </div>
                       </div>
@@ -363,7 +368,9 @@ export default function Dashboard() {
                 ) : (
                   <div className="text-center py-8 text-gray-600">
                     <p>No COW assets found with selected filters.</p>
-                    <p className="text-sm">Try adjusting your region or vendor filters.</p>
+                    <p className="text-sm">
+                      Try adjusting your region or vendor filters.
+                    </p>
                   </div>
                 )}
               </CardContent>
@@ -461,7 +468,10 @@ export default function Dashboard() {
                     <div>
                       <p className="text-gray-600 text-sm">Unique Vendors</p>
                       <p className="text-3xl font-bold text-stc-purple-dark">
-                        {[...new Set(filteredCOWData.map((c) => c.vendor))].length}
+                        {
+                          [...new Set(filteredCOWData.map((c) => c.vendor))]
+                            .length
+                        }
                       </p>
                     </div>
                     <BarChart3 className="w-8 h-8 text-stc-purple" />
@@ -498,7 +508,7 @@ export default function Dashboard() {
                     data={uniqueVendors.map((vendor) => ({
                       name: vendor,
                       count: filteredCOWData.filter(
-                        (cow) => cow.vendor === vendor
+                        (cow) => cow.vendor === vendor,
                       ).length,
                     }))}
                   >
@@ -534,7 +544,7 @@ export default function Dashboard() {
                     data={["Shelter", "Outdoor"].map((type) => ({
                       type,
                       count: filteredCOWData.filter(
-                        (cow) => cow.shelter_outdoor === type
+                        (cow) => cow.shelter_outdoor === type,
                       ).length,
                     }))}
                   >

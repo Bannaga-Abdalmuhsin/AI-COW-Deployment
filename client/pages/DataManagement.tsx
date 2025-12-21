@@ -82,15 +82,17 @@ export default function DataManagement() {
               Current COW Distribution Upload
             </CardTitle>
             <CardDescription className="text-gray-600">
-              Upload your current COW asset distribution from Google Sheets in CSV format
+              Upload your current COW asset distribution from Google Sheets in
+              CSV format
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="bg-stc-purple/10 border border-stc-purple/20 rounded-lg p-4 mb-6">
               <p className="text-stc-purple-dark text-sm">
-                ⚠️ <span className="font-semibold">Important:</span> The COW Master sheet
-                is required to display current asset distribution. Movement Archive with
-                historical deployments can be added later to enable ML model training.
+                ⚠️ <span className="font-semibold">Important:</span> The COW
+                Master sheet is required to display current asset distribution.
+                Movement Archive with historical deployments can be added later
+                to enable ML model training.
               </p>
             </div>
             <p className="text-gray-700 mb-4">
@@ -149,7 +151,8 @@ export default function DataManagement() {
               ML Model Training (Future)
             </CardTitle>
             <CardDescription className="text-gray-600">
-              Upload Movement Archive historical data to enable ML model training
+              Upload Movement Archive historical data to enable ML model
+              training
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -159,7 +162,8 @@ export default function DataManagement() {
                   Step 1: Upload Movement Archive
                 </h4>
                 <p className="text-gray-600 text-sm">
-                  Historical deployment records with success flags, dates, and technical specifications
+                  Historical deployment records with success flags, dates, and
+                  technical specifications
                 </p>
               </div>
               <div className="border-l-4 border-stc-purple pl-4">
