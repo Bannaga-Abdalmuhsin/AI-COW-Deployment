@@ -79,19 +79,18 @@ export default function DataManagement() {
           <CardHeader>
             <CardTitle className="text-stc-purple-dark flex items-center gap-2">
               <Upload className="w-5 h-5 text-stc-purple" />
-              Data Upload Requirements
+              Current COW Distribution Upload
             </CardTitle>
             <CardDescription className="text-gray-600">
-              Prepare your 5 clean data tables in Excel or CSV format
+              Upload your current COW asset distribution from Google Sheets in CSV format
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="bg-stc-purple/10 border border-stc-purple/20 rounded-lg p-4 mb-6">
               <p className="text-stc-purple-dark text-sm">
-                ⚠️ <span className="font-semibold">Important:</span> Deployment
-                History table is essential for training ML models. The more
-                historical data you provide (3+ years recommended), the better
-                the predictions.
+                ⚠️ <span className="font-semibold">Important:</span> The COW Master sheet
+                is required to display current asset distribution. Movement Archive with
+                historical deployments can be added later to enable ML model training.
               </p>
             </div>
             <p className="text-gray-700 mb-4">
