@@ -9,6 +9,7 @@ export default function Navigation() {
   const navLinks = [
     { label: "Home", path: "/" },
     { label: "Dashboard", path: "/dashboard" },
+    { label: "Movement AI", path: "/movement-predictions" },
     { label: "Data Management", path: "/data" },
     { label: "Sign in", path: "/login" },
   ];
