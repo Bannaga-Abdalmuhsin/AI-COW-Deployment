@@ -1,6 +1,6 @@
 # Movement Predictive & Analysis Tool
 
-An STC-branded decision-support experience for learning from historical Cell on Wheels (COW) movements. The public deployment presents sanitized aggregate insights, model validation results, and a proposed data-governance architecture without publishing operational records.
+An STC-branded decision-support experience for learning from historical Cell on Wheels (COW) movements. The public deployment presents operational search, aggregate insights, model validation results, and an Excel-grounded assistant.
 
 ## Live demonstration
 
@@ -16,11 +16,12 @@ Before connecting sensitive or live STC data, replace the demonstration gate wit
 - **Executive overview** — program scope, value proposition, and operating metrics
 - **Movement intelligence** — aggregate movement trends, regions, categories, and vendor footprint
 - **Predictive models** — validation results for next-region, movement-category, and timing models
+- **AI operations agent** — grounded natural-language retrieval across the complete uploaded movement workbook
 - **Data governance** — privacy controls and the target production architecture
 
 ## Public-data policy
 
-This repository excludes raw history, coordinates, routes, and the complete record-level forecast set. The deployed dashboard reads sanitized aggregates from `public/movement-insights.json` plus a deliberately limited set of five upcoming asset expectations in `public/movement-predictions.json`.
+This public demonstration includes the complete Excel-derived movement knowledge index in `public/operations-knowledge.json`, including operational record fields. It also includes sanitized aggregates and five upcoming model expectations. Do not use this deployment for confidential data.
 
 Historical source records should remain in an approved private data store. Model training should run in a controlled environment, with only reviewed aggregate metrics promoted to this demonstration.
 

@@ -208,7 +208,7 @@ export default function Login() {
 
                 <div className="mt-7 flex items-start gap-3 border-t border-gray-100 pt-6 text-xs leading-5 text-gray-500">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                  <p>Operational records and COW-level details are not published in this demonstration environment.</p>
+                  <p>This demonstration contains publicly hosted operational records. Do not add confidential data without a private authenticated backend.</p>
                 </div>
               </div>
               <p className="mt-6 text-center text-xs text-white/50">

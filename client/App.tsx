@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import DataManagement from "./pages/DataManagement";
 import Login from "./pages/Login";
 import MovementPredictions from "./pages/MovementPredictions";
+import OperationsAgent from "./pages/OperationsAgent";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./lib/auth";
@@ -31,6 +32,7 @@ const App = () => (
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/data" element={<DataManagement />} />
               <Route path="/movement-predictions" element={<MovementPredictions />} />
+              <Route path="/agent" element={<OperationsAgent />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

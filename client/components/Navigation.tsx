@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BarChart3, BrainCircuit, Database, LayoutDashboard, LogOut, ShieldCheck } from "lucide-react";
+import { BarChart3, Bot, BrainCircuit, Database, LayoutDashboard, LogOut, ShieldCheck } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 const stcLogo = "https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fc565c09ac98d4bb1923fb8ee199fe98c?format=webp&width=200";
@@ -12,6 +12,7 @@ export default function Navigation() {
     { label: "Overview", path: "/", icon: LayoutDashboard },
     { label: "Movement Intelligence", path: "/dashboard", icon: BarChart3 },
     { label: "Predictive Models", path: "/movement-predictions", icon: BrainCircuit },
+    { label: "AI Agent", path: "/agent", icon: Bot },
     { label: "Data Governance", path: "/data", icon: Database },
   ];
   return <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#25102f]/95 text-white shadow-xl backdrop-blur-xl">
