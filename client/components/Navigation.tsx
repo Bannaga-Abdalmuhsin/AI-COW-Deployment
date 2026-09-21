@@ -10,6 +10,7 @@ export default function Navigation() {
     { label: "Home", path: "/" },
     { label: "Dashboard", path: "/dashboard" },
     { label: "Data Management", path: "/data" },
+    { label: "Sign in", path: "/login" },
   ];
 
   return (
