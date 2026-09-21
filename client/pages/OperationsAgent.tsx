@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import Navigation from "@/components/Navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -64,6 +64,8 @@ export default function OperationsAgent() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [loadAttempt, setLoadAttempt] = useState(0);
+  const [isResponding, startTransition] = useTransition();
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setLoading(true);
@@ -96,6 +98,10 @@ export default function OperationsAgent() {
     });
   }, [loadAttempt]);
 
+  useEffect(() => {
+    messagesRef.current?.scrollTo({ top: messagesRef.current.scrollHeight, behavior: "smooth" });
+  }, [answers, isResponding]);
+
   const indexedRecords = useMemo(() => (knowledge?.records ?? []).map((record) => ({
     record,
     search: [record.cowId, record.eventName, record.fromLocation, record.toLocation, record.subLocation, record.category, record.administrativeRegion, record.regionFrom, record.regionTo, record.cityDistrict, record.vendor, record.priority, record.statusRemarks, record.managementComments].filter(Boolean).join(" ").toLowerCase(),
@@ -104,8 +110,10 @@ export default function OperationsAgent() {
   const ask = (prompt: string) => {
     const clean = prompt.trim();
     if (!clean || !knowledge) return;
-    setAnswers((current) => [...current, answerQuestion(clean, indexedRecords, predictions)]);
     setQuestion("");
+    startTransition(() => {
+      setAnswers((current) => [...current, answerQuestion(clean, indexedRecords, predictions)]);
+    });
   };
 
   const submit = (event: FormEvent) => { event.preventDefault(); ask(question); };
@@ -122,17 +130,18 @@ export default function OperationsAgent() {
     <main className="mx-auto grid max-w-[1500px] gap-6 px-5 py-7 lg:grid-cols-[320px_minmax(0,1fr)] lg:px-8">
       <aside className="space-y-5">
         <Card className="border-[#e6dce9] shadow-sm"><CardContent className="pt-6"><div className="flex items-center gap-3"><span className="rounded-xl bg-[#8c2ca8]/10 p-2.5 text-[#8c2ca8]"><Database className="h-5 w-5" /></span><div><p className="font-semibold text-[#25102f]">Knowledge coverage</p><p className="text-xs text-slate-500">Complete movement workbook</p></div></div><div className="mt-5 space-y-3 text-sm"><Coverage label="Movement records" value={knowledge?.recordCount.toLocaleString() ?? "Loading"} /><Coverage label="Available fields" value={knowledge?.fieldCount.toString() ?? "—"} /><Coverage label="ML expectations" value={predictions.length.toString()} /></div></CardContent></Card>
-        <Card className="border-[#e6dce9] shadow-sm"><CardContent className="pt-6"><p className="mb-3 text-xs font-bold uppercase tracking-[.14em] text-slate-400">Suggested questions</p><div className="space-y-2">{suggestions.map((suggestion) => <button key={suggestion} onClick={() => ask(suggestion)} disabled={loading} className="w-full rounded-xl border border-[#eee7f0] bg-white p-3 text-left text-xs leading-5 text-slate-600 transition hover:border-[#8c2ca8]/40 hover:bg-[#faf7fb] hover:text-[#25102f]">{suggestion}</button>)}</div></CardContent></Card>
+        <Card className="border-[#e6dce9] shadow-sm"><CardContent className="pt-6"><p className="mb-3 text-xs font-bold uppercase tracking-[.14em] text-slate-400">Suggested questions</p><div className="space-y-2">{suggestions.map((suggestion) => <button key={suggestion} onClick={() => ask(suggestion)} disabled={loading || Boolean(loadError) || isResponding} className="w-full rounded-xl border border-[#eee7f0] bg-white p-3 text-left text-xs leading-5 text-slate-600 transition hover:border-[#8c2ca8]/40 hover:bg-[#faf7fb] hover:text-[#25102f]">{suggestion}</button>)}</div></CardContent></Card>
       </aside>
 
       <section className="flex min-h-[680px] flex-col overflow-hidden rounded-2xl border border-[#e6dce9] bg-white shadow-sm">
         <div className="flex items-center justify-between border-b border-[#eee7f0] px-5 py-4"><div className="flex items-center gap-3"><span className="relative rounded-xl bg-[#25102f] p-2 text-white"><Sparkles className="h-5 w-5" /><span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-400" /></span><div><p className="font-semibold text-[#25102f]">COW Intelligence Assistant</p><p className="text-xs text-slate-500">Grounded retrieval · no invented records</p></div></div><Badge variant="outline" className="hidden border-[#d8c9dc] text-[#8c2ca8] sm:inline-flex">Excel source</Badge></div>
-        <div className="flex-1 space-y-5 overflow-y-auto bg-[#fcfbfc] p-5 md:p-7">
+        <div ref={messagesRef} role="log" aria-live="polite" className="flex-1 space-y-5 overflow-y-auto bg-[#fcfbfc] p-5 md:p-7">
           {loadError && <div className="mx-auto flex max-w-xl flex-col items-center rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center"><Database className="h-8 w-8 text-red-600" /><h2 className="mt-4 text-lg font-bold text-red-900">Knowledge base unavailable</h2><p className="mt-2 text-sm leading-6 text-red-800/70">{loadError}</p><Button onClick={() => setLoadAttempt((value) => value + 1)} className="mt-5 bg-red-700 text-white hover:bg-red-800">Retry loading</Button></div>}
           {!loadError && answers.length === 0 && <div className="mx-auto flex max-w-xl flex-col items-center py-20 text-center"><span className="rounded-2xl bg-[#8c2ca8]/10 p-4 text-[#8c2ca8]"><MessageSquareText className="h-8 w-8" /></span><h2 className="mt-5 text-xl font-bold text-[#25102f]">{loading ? "Loading the movement knowledge base…" : "What would you like to know?"}</h2><p className="mt-2 text-sm leading-6 text-slate-500">{loading ? "Loading eight verified workbook segments." : "Try a COW ID, event name, destination site, region, vendor, year, or ask for the next predicted movement."}</p></div>}
           {answers.map((item, index) => <Answer key={`${item.question}-${index}`} item={item} />)}
+          {isResponding && <div role="status" className="flex items-center gap-2 text-xs text-slate-500"><span className="h-2 w-2 animate-pulse rounded-full bg-[#8c2ca8]" />Searching the grounded movement records…</div>}
         </div>
-        <form onSubmit={submit} className="border-t border-[#eee7f0] bg-white p-4 md:p-5"><div className="flex gap-3"><div className="relative flex-1"><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={question} onChange={(event) => setQuestion(event.target.value)} disabled={loading || Boolean(loadError)} placeholder={loadError ? "Knowledge base unavailable — use Retry loading" : loading ? "Loading the movement knowledge base…" : "Ask about a COW, event, site, date, region, vendor, or prediction…"} className="h-12 w-full rounded-xl border border-[#dcd1df] bg-[#faf8fb] pl-11 pr-4 text-sm outline-none transition focus:border-[#8c2ca8] focus:ring-2 focus:ring-[#8c2ca8]/10" /></div><Button type="submit" disabled={loading || Boolean(loadError) || !question.trim()} className="h-12 bg-[#8c2ca8] px-5 text-white hover:bg-[#6f1f86]"><Send className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Ask agent</span></Button></div><p className="mt-2 text-[10px] text-slate-400">Verify operational decisions against the evidence rows and current field instructions.</p></form>
+        <form onSubmit={submit} className="border-t border-[#eee7f0] bg-white p-4 md:p-5"><div className="flex gap-3"><div className="relative flex-1"><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={question} onChange={(event) => setQuestion(event.target.value)} disabled={loading || Boolean(loadError)} placeholder={loadError ? "Knowledge base unavailable — use Retry loading" : loading ? "Loading the movement knowledge base…" : "Ask about a COW, event, site, date, region, vendor, or prediction…"} className="h-12 w-full rounded-xl border border-[#dcd1df] bg-[#faf8fb] pl-11 pr-4 text-sm outline-none transition focus:border-[#8c2ca8] focus:ring-2 focus:ring-[#8c2ca8]/10" /></div><Button type="submit" disabled={loading || Boolean(loadError) || isResponding || !question.trim()} className="h-12 bg-[#8c2ca8] px-5 text-white hover:bg-[#6f1f86]"><Send className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Ask agent</span></Button></div><p className="mt-2 text-[10px] text-slate-400">Verify operational decisions against the evidence rows and current field instructions.</p></form>
       </section>
     </main>
   </div>;
