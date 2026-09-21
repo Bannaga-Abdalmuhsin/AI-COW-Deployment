@@ -1,271 +1,45 @@
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
-import {
-  BarChart3,
-  TrendingUp,
-  MapPin,
-  Zap,
-  ArrowRight,
-  CheckCircle2,
-} from "lucide-react";
+import { ArrowRight, BrainCircuit, CalendarRange, CheckCircle2, MapPinned, Route, ShieldCheck, Sparkles } from "lucide-react";
+
+const modules = [
+  { icon: Route, title: "Movement Intelligence", text: "Understand regional flows, movement seasonality, event patterns, and fleet utilization." },
+  { icon: BrainCircuit, title: "Predictive Models", text: "Forecast next region and movement category with transparent validation metrics." },
+  { icon: CalendarRange, title: "Planning Horizon", text: "Use historical patterns to support event readiness and COW allocation planning." },
+];
 
 export default function Index() {
-  const features = [
-    {
-      icon: TrendingUp,
-      title: "Demand Prediction",
-      description:
-        "AI-powered forecasting of COW deployment demand by region and event type",
-    },
-    {
-      icon: CheckCircle2,
-      title: "Success Scoring",
-      description:
-        "Predict deployment success probability based on site characteristics and history",
-    },
-    {
-      icon: MapPin,
-      title: "Site Optimization",
-      description:
-        "Smart recommendations matching COWs to sites with vendor and tech constraints",
-    },
-    {
-      icon: Zap,
-      title: "Logistics Planning",
-      description:
-        "Estimate setup time and logistics requirements for seamless deployments",
-    },
-  ];
-
-  const steps = [
-    {
-      number: "1",
-      title: "Prepare Data",
-      description: "Upload your events, deployments, sites, and warehouse data",
-    },
-    {
-      number: "2",
-      title: "Train Models",
-      description:
-        "ML models learn from 3+ years of deployment history to predict success",
-    },
-    {
-      number: "3",
-      title: "Get Insights",
-      description:
-        "Dashboard shows demand heatmaps and AI-ranked site recommendations",
-    },
-    {
-      number: "4",
-      title: "Optimize Placement",
-      description:
-        "Make data-driven decisions with explainable ML recommendations",
-    },
-  ];
-
-  const dataRequirements = [
-    { table: "Events", rows: "Religious / Sport / National / Incident" },
-    { table: "Deployment History", rows: "3-year historical deployment data" },
-    { table: "Site Master", rows: "Vendor, region, tech capabilities" },
-    { table: "Warehouse (ACES)", rows: "COW inventory locations" },
-    { table: "COW Assets", rows: "Tech specs, height, VSAT capabilities" },
-  ];
-
-  return (
-    <div className="min-h-screen bg-stc-lilac">
-      <Navigation />
-
-      {/* Hero Section */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl sm:text-6xl font-bold text-stc-purple-dark mb-6 leading-tight">
-            AI-Powered COW Deployment Planning
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Predict demand, optimize site selection, and ensure deployment
-            success with machine learning-driven recommendations
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Link to="/dashboard">
-              <Button className="bg-stc-purple hover:bg-stc-purple/90 text-white px-8 py-6 text-lg flex items-center gap-2 shadow-lg">
-                Launch Dashboard <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
-            <Button
-              variant="outline"
-              className="px-8 py-6 text-lg border-stc-purple text-stc-purple hover:bg-stc-purple/10"
-            >
-              Learn More
-            </Button>
+  return <div className="min-h-screen bg-[#f7f4f8] text-[#25102f]">
+    <Navigation />
+    <main>
+      <section className="relative overflow-hidden bg-[#25102f] text-white">
+        <div className="absolute inset-0 opacity-30 [background-image:radial-gradient(circle_at_20%_20%,#8c2ca8_0,transparent_32%),radial-gradient(circle_at_82%_70%,#ff375e_0,transparent_26%)]" />
+        <div className="relative mx-auto grid max-w-[1500px] gap-12 px-6 py-20 lg:grid-cols-[1.15fr_.85fr] lg:px-10 lg:py-28">
+          <div>
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[.18em] text-white/80"><Sparkles className="h-4 w-4 text-[#ff375e]" />AI-enabled COW operations</div>
+            <h1 className="max-w-4xl text-5xl font-bold leading-[1.04] tracking-tight md:text-7xl">Movement Predictive<br/><span className="text-[#ff375e]">& Analysis Tool</span></h1>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-white/65">A decision-support platform that transforms cumulative COW movement history into regional intelligence, model performance indicators, and actionable planning signals.</p>
+            <div className="mt-9 flex flex-wrap gap-3"><Link to="/dashboard" className="inline-flex items-center gap-2 rounded-xl bg-[#ff375e] px-6 py-3.5 font-semibold text-white shadow-lg shadow-[#ff375e]/20 transition hover:-translate-y-0.5">Open movement intelligence <ArrowRight className="h-4 w-4" /></Link><Link to="/movement-predictions" className="inline-flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 px-6 py-3.5 font-semibold text-white hover:bg-white/15">View model performance</Link></div>
+          </div>
+          <div className="grid content-center gap-3 sm:grid-cols-2">
+            <HeroMetric label="Historical movements" value="2,694" note="Validated records" />
+            <HeroMetric label="COW fleet coverage" value="447" note="Unique assets" />
+            <HeroMetric label="Next-region accuracy" value="80.4%" note="95.2% Top-3" />
+            <HeroMetric label="History window" value="5+ yrs" note="Jan 2021 – Apr 2026" />
           </div>
         </div>
+      </section>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
-          {features.map((feature, idx) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={idx}
-                className="bg-white border border-stc-purple/10 rounded-lg p-6 hover:shadow-lg transition-all hover:border-stc-purple/30"
-              >
-                <Icon className="w-8 h-8 text-stc-purple mb-4" />
-                <h3 className="text-lg font-semibold text-stc-purple-dark mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm">{feature.description}</p>
-              </div>
-            );
-          })}
-        </div>
+      <section className="mx-auto max-w-[1500px] px-6 py-16 lg:px-10">
+        <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end"><div><p className="text-sm font-bold uppercase tracking-[.2em] text-[#8c2ca8]">Operational decision support</p><h2 className="mt-2 text-3xl font-bold md:text-4xl">One view from history to action</h2></div><p className="max-w-xl text-sm leading-6 text-slate-500">Designed for planning and leadership review. Operational identifiers and detailed movement records remain outside the public deployment.</p></div>
+        <div className="grid gap-5 md:grid-cols-3">{modules.map(({icon:Icon,title,text}) => <div key={title} className="group rounded-2xl border border-[#e6dce9] bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-[#8c2ca8]/10 text-[#8c2ca8]"><Icon className="h-6 w-6" /></div><h3 className="text-xl font-bold">{title}</h3><p className="mt-3 text-sm leading-6 text-slate-500">{text}</p></div>)}</div>
+      </section>
 
-        {/* How It Works */}
-        <div className="mb-24">
-          <h2 className="text-3xl font-bold text-stc-purple-dark mb-12 text-center">
-            How It Works
-          </h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            {steps.map((step, idx) => (
-              <div key={idx} className="relative">
-                <div className="bg-gradient-to-br from-stc-lavender/30 to-stc-purple/20 border border-stc-purple/20 rounded-lg p-6 text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 bg-stc-purple text-white rounded-full font-bold mb-4">
-                    {step.number}
-                  </div>
-                  <h3 className="text-lg font-semibold text-stc-purple-dark mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{step.description}</p>
-                </div>
-                {idx < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-1/3 -right-3 text-stc-purple/30">
-                    <ArrowRight className="w-6 h-6" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Data Requirements */}
-        <div className="mb-24">
-          <h2 className="text-3xl font-bold text-stc-purple-dark mb-12 text-center">
-            What You Need
-          </h2>
-          <p className="text-gray-600 text-center mb-8">
-            Prepare 5 clean data tables to train our ML models
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {dataRequirements.map((req, idx) => (
-              <div
-                key={idx}
-                className="bg-white border border-stc-purple/10 rounded-lg p-4 hover:shadow-md transition-shadow"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-stc-purple rounded-full"></div>
-                  <h4 className="font-semibold text-stc-purple-dark">
-                    {req.table}
-                  </h4>
-                </div>
-                <p className="text-gray-600 text-sm">{req.rows}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ML Models Section */}
-        <div className="bg-gradient-to-br from-stc-lavender/20 to-stc-purple/10 border border-stc-purple/20 rounded-xl p-8 mb-24">
-          <h2 className="text-2xl font-bold text-stc-purple-dark mb-8">
-            Three Powerful ML Models
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <BarChart3 className="w-6 h-6 text-stc-purple" />
-                <h3 className="font-semibold text-stc-purple-dark">
-                  Demand Prediction
-                </h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-4">
-                Forecasts COW demand by region and event type based on temporal
-                patterns and historical trends
-              </p>
-              <p className="text-xs text-gray-500">
-                Output: demand_score (0–1) | Runs: Monthly
-              </p>
-            </div>
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <CheckCircle2 className="w-6 h-6 text-stc-purple" />
-                <h3 className="font-semibold text-stc-purple-dark">
-                  Site Success Scoring
-                </h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-4">
-                Predicts deployment success probability considering site vendor,
-                tech specs, and historical performance
-              </p>
-              <p className="text-xs text-gray-500">
-                Output: success_probability (0–1) | Runs: On-demand
-              </p>
-            </div>
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <TrendingUp className="w-6 h-6 text-stc-purple" />
-                <h3 className="font-semibold text-stc-purple-dark">
-                  Logistics Planning
-                </h3>
-              </div>
-              <p className="text-gray-600 text-sm mb-4">
-                Estimates setup time and logistics risks based on warehouse
-                distance, terrain, and equipment requirements
-              </p>
-              <p className="text-xs text-gray-500">
-                Output: predicted_time_hours | Runs: On-demand
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="bg-gradient-to-r from-stc-purple to-stc-purple/90 rounded-xl p-12 text-center shadow-lg">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Optimize Your Deployments?
-          </h2>
-          <p className="text-white/90 mb-8 text-lg">
-            Start with our interactive dashboard and upload your data today
-          </p>
-          <Link to="/dashboard">
-            <Button className="bg-white text-stc-purple hover:bg-white/90 px-8 py-6 text-lg font-semibold">
-              Launch Dashboard Now
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Footer */}
-      <footer className="border-t border-stc-purple/20 bg-stc-lilac py-12 mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center gap-8 mb-8">
-            <div className="flex items-center gap-6 flex-wrap justify-center">
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fc565c09ac98d4bb1923fb8ee199fe98c?format=webp&width=200"
-                alt="STC Logo"
-                className="h-8"
-              />
-              <div className="hidden sm:block h-8 w-px bg-stc-purple/20"></div>
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fed947135ce9d4b3a8b599f5a859cf435?format=webp&width=300"
-                alt="ACES Managed Services Logo"
-                className="h-8"
-              />
-            </div>
-            <p className="text-center text-gray-600">
-              COW Deploy AI • ML-Powered Cell on Wheels Deployment Optimization
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+      <section className="mx-auto max-w-[1500px] px-6 pb-20 lg:px-10"><div className="grid gap-6 rounded-3xl border border-[#e6dce9] bg-white p-8 shadow-sm lg:grid-cols-[1fr_1fr] lg:p-10"><div><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><ShieldCheck /></div><h2 className="mt-5 text-3xl font-bold">Built for responsible operational use</h2><p className="mt-4 max-w-xl text-sm leading-7 text-slate-500">The demonstration publishes only aggregated statistics. COW identifiers, coordinates, location histories, and record-level predictions have been removed from the public repository.</p></div><div className="grid gap-3 sm:grid-cols-2"><Control text="Protected application routes"/><Control text="Sanitized aggregate dataset"/><Control text="Chronological model validation"/><Control text="Private backend integration ready"/></div></div></section>
+    </main>
+    <footer className="border-t border-[#e6dce9] bg-white"><div className="mx-auto flex max-w-[1500px] flex-col gap-2 px-6 py-7 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between lg:px-10"><p>stc COW Movement Predictive & Analysis Tool</p><p>Decision support • Aggregated demonstration data</p></div></footer>
+  </div>;
 }
+
+function HeroMetric({label,value,note}:{label:string;value:string;note:string}) { return <div className="rounded-2xl border border-white/10 bg-white/[.07] p-5 backdrop-blur"><p className="text-xs uppercase tracking-[.15em] text-white/45">{label}</p><p className="mt-3 text-3xl font-bold">{value}</p><p className="mt-1 text-xs text-white/45">{note}</p></div>; }
+function Control({text}:{text:string}) { return <div className="flex items-center gap-3 rounded-xl bg-[#f7f4f8] p-4 text-sm font-semibold"><CheckCircle2 className="h-5 w-5 text-emerald-600" />{text}</div>; }

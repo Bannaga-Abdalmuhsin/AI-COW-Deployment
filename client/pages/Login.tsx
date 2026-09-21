@@ -1,8 +1,7 @@
 import { FormEvent, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Activity,
-  ArrowLeft,
   Eye,
   EyeOff,
   LockKeyhole,
@@ -15,12 +14,15 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/lib/auth";
 
 const stcLogo =
   "https://cdn.builder.io/api/v1/image/assets%2Fabc8ab05f7d144f289a582747d3e5ca3%2Fc565c09ac98d4bb1923fb8ee199fe98c?format=webp&width=200";
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [credentials, setCredentials] = useState({
     username: "",
@@ -35,8 +37,13 @@ export default function Login() {
       return;
     }
 
-    toast.success(`Welcome back, ${credentials.username.trim()}.`);
-    navigate("/dashboard", { replace: true });
+    if (!signIn(credentials.username, credentials.password)) {
+      toast.error("Invalid username or password.");
+      return;
+    }
+    toast.success("Secure workspace unlocked.");
+    const destination = (location.state as { from?: string } | null)?.from || "/";
+    navigate(destination, { replace: true });
   };
 
   return (
@@ -54,19 +61,13 @@ export default function Login() {
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-6 sm:px-10 lg:px-12">
         <header className="flex items-center justify-between">
-          <Link to="/" className="group inline-flex items-center gap-3">
+          <div className="group inline-flex items-center gap-3">
             <span className="rounded-xl bg-white/10 p-2.5 ring-1 ring-white/15 transition-colors group-hover:bg-white/20">
               <Zap className="h-5 w-5 text-stc-lavender" />
             </span>
-            <span className="text-lg font-bold tracking-tight">COW Deploy AI</span>
-          </Link>
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm text-white/70 transition-colors hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to home
-          </Link>
+            <span className="text-lg font-bold tracking-tight">Movement Predictive & Analysis Tool</span>
+          </div>
+          <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs text-emerald-200">Authorized access only</span>
         </header>
 
         <div className="flex flex-1 items-center py-12 lg:py-16">
@@ -76,18 +77,18 @@ export default function Login() {
                 <img src={stcLogo} alt="STC" className="h-9 brightness-0 invert" />
                 <span className="h-8 w-px bg-white/20" />
                 <span className="text-sm font-medium uppercase tracking-[0.2em] text-white/60">
-                  Intelligent network operations
+                  stc COW operational intelligence
                 </span>
               </div>
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.28em] text-stc-lavender">
                 Secure command center
               </p>
               <h1 className="max-w-lg text-5xl font-bold leading-[1.08] tracking-tight text-white xl:text-6xl">
-                Plan every deployment with confidence.
+                Anticipate every COW movement.
               </h1>
               <p className="mt-6 max-w-lg text-lg leading-8 text-white/70">
-                Bring demand signals, site intelligence, and logistics planning
-                together in one clear operational view.
+                Turn historical movement patterns into explainable forecasts,
+                regional demand signals, and faster deployment decisions.
               </p>
 
               <div className="mt-10 grid max-w-lg grid-cols-2 gap-3">
@@ -99,16 +100,16 @@ export default function Login() {
                       Live
                     </span>
                   </div>
-                  <p className="text-2xl font-semibold">24 regions</p>
-                  <p className="mt-1 text-xs text-white/50">Connected network view</p>
+                  <p className="text-2xl font-semibold">4 regions</p>
+                  <p className="mt-1 text-xs text-white/50">Kingdom-wide coverage</p>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.08] p-4 backdrop-blur-sm">
                   <div className="mb-5 flex items-center justify-between">
                     <Activity className="h-5 w-5 text-stc-lavender" />
                     <span className="text-xs text-white/50">AI signal</span>
                   </div>
-                  <p className="text-2xl font-semibold">98.4%</p>
-                  <p className="mt-1 text-xs text-white/50">Deployment readiness</p>
+                  <p className="text-2xl font-semibold">80.4%</p>
+                  <p className="mt-1 text-xs text-white/50">Next-region accuracy</p>
                 </div>
               </div>
             </section>
@@ -127,7 +128,7 @@ export default function Login() {
                   </div>
                   <h2 className="text-3xl font-bold tracking-tight">Welcome back</h2>
                   <p className="mt-2 text-sm leading-6 text-gray-500">
-                    Sign in to access your deployment intelligence workspace.
+                    Sign in to access protected movement intelligence.
                   </p>
                 </div>
 
@@ -207,7 +208,7 @@ export default function Login() {
 
                 <div className="mt-7 flex items-start gap-3 border-t border-gray-100 pt-6 text-xs leading-5 text-gray-500">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                  <p>Your workspace is protected with secure access controls.</p>
+                  <p>Operational records and COW-level details are not published in this demonstration environment.</p>
                 </div>
               </div>
               <p className="mt-6 text-center text-xs text-white/50">
