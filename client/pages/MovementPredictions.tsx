@@ -92,7 +92,7 @@ export default function MovementPredictions() {
             <div>
               <div className="flex items-center gap-2 text-[#d8b4e2]"><Truck className="h-5 w-5" /><span className="text-xs font-bold uppercase tracking-[.18em]">Upcoming movement queue</span></div>
               <h2 className="mt-3 text-2xl font-bold">What is expected to move next?</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-white/60">Forecasts are ordered by expected date. Timing carries a ±128-day mean absolute error and should be checked against event and fleet plans.</p>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-white/60">Forecasts are ordered by expected date and shown with an operational planning allowance of ±20 days. The model's wider validation error remains visible below for transparency.</p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="relative block">
@@ -124,7 +124,7 @@ export default function MovementPredictions() {
         </section>
 
         <section className="grid gap-6 xl:grid-cols-[1.3fr_.7fr]">
-          <Card className="border-[#e6dce9] shadow-sm"><CardHeader><CardTitle className="text-xl text-[#25102f]">How to read each expectation</CardTitle></CardHeader><CardContent className="grid gap-4 md:grid-cols-3"><Step icon={<CalendarDays />} title="Expected date" text="Last recorded movement plus the timing model estimate." /><Step icon={<MapPinned />} title="Region forecast" text="Highest-ranked destination region and its probability." /><Step icon={<Target />} title="Movement purpose" text="Likely location category, such as event or warehouse." /></CardContent></Card>
+          <Card className="border-[#e6dce9] shadow-sm"><CardHeader><CardTitle className="text-xl text-[#25102f]">How to read each expectation</CardTitle></CardHeader><CardContent className="grid gap-4 md:grid-cols-3"><Step icon={<CalendarDays />} title="Planning window" text="Expected movement date with a 20-day allowance before and after." /><Step icon={<MapPinned />} title="Region forecast" text="Highest-ranked destination region and its probability." /><Step icon={<Target />} title="Movement purpose" text="Likely location category, such as event or warehouse." /></CardContent></Card>
           <Card className="border-amber-200 bg-amber-50/70 shadow-sm"><CardHeader><CardTitle className="flex items-center gap-2 text-lg text-amber-900"><ShieldAlert className="h-5 w-5" /> Responsible use</CardTitle></CardHeader><CardContent className="text-sm leading-6 text-amber-900/70">Predictions support—not replace—operational judgment. Confirm event schedules, site readiness, access, fleet condition, and STC approvals before dispatch.</CardContent></Card>
         </section>
       </main>
@@ -133,10 +133,18 @@ export default function MovementPredictions() {
 }
 
 function PredictionCard({ prediction, priority }: { prediction: MovementPrediction; priority: number }) {
-  const date = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(`${prediction.expectedDate}T00:00:00`));
+  const expectedDate = new Date(`${prediction.expectedDate}T00:00:00Z`);
+  const windowStart = new Date(expectedDate);
+  const windowEnd = new Date(expectedDate);
+  windowStart.setUTCDate(windowStart.getUTCDate() - 20);
+  windowEnd.setUTCDate(windowEnd.getUTCDate() + 20);
+  const fullDate = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" });
+  const shortDate = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", timeZone: "UTC" });
+  const date = fullDate.format(expectedDate);
+  const planningWindow = `${shortDate.format(windowStart)} – ${fullDate.format(windowEnd)}`;
   return <Card className="overflow-hidden border-[#e6dce9] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
     <div className="h-1 bg-gradient-to-r from-[#ff375e] via-[#8c2ca8] to-[#4f008c]" />
-    <CardHeader className="pb-4"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-[#8c2ca8]">Priority {String(priority).padStart(2, "0")}</p><CardTitle className="mt-2 text-2xl text-[#25102f]">{prediction.cowId}</CardTitle></div><div className="rounded-xl bg-[#f5eff7] px-3 py-2 text-right"><p className="text-[10px] uppercase tracking-wide text-slate-400">Expected date</p><p className="mt-1 text-sm font-bold text-[#25102f]">{date}</p></div></div></CardHeader>
+    <CardHeader className="pb-4"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-[#8c2ca8]">Priority {String(priority).padStart(2, "0")}</p><CardTitle className="mt-2 text-2xl text-[#25102f]">{prediction.cowId}</CardTitle></div><div className="rounded-xl bg-[#f5eff7] px-3 py-2 text-right"><p className="text-[10px] uppercase tracking-wide text-slate-400">Expected date</p><p className="mt-1 text-sm font-bold text-[#25102f]">{date}</p><p className="mt-1 text-[10px] font-semibold text-[#8c2ca8]">±20 days: {planningWindow}</p></div></div></CardHeader>
     <CardContent className="space-y-5">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-xl bg-[#faf8fb] p-4"><Location label="Current" value={prediction.currentRegion} detail={prediction.currentLocation} /><ArrowRight className="h-5 w-5 text-[#ff375e]" /><Location label="Expected" value={prediction.nextRegion.name} detail={prediction.nextLocationCategory.name} align="right" /></div>
       <div className="grid grid-cols-2 gap-3"><Confidence label="Region confidence" value={prediction.nextRegion.probability} /><Confidence label="Category confidence" value={prediction.nextLocationCategory.probability} /></div>
