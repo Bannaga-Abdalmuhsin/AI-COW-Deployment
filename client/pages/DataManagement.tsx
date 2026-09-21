@@ -4,7 +4,7 @@ import { Archive, CheckCircle2, CloudCog, Database, FileCheck2, LockKeyhole, Ref
 
 const controls=[
  {icon:LockKeyhole,title:"Access control",text:"All analytical routes require an authenticated session. Production authentication will be connected to the approved identity provider."},
- {icon:Database,title:"Data minimization",text:"The public demonstration contains aggregate statistics only. COW IDs, coordinates, routes, and record-level forecasts are excluded."},
+ {icon:Database,title:"Data minimization",text:"The public demonstration excludes raw history, coordinates, routes, and the full forecast set. Only five approved upcoming expectations are shown."},
  {icon:FileCheck2,title:"Validation",text:"Input data is normalized, date-checked, deduplicated, and validated before model training."},
  {icon:Archive,title:"Retention",text:"Training snapshots and model artifacts will follow the approved STC retention and audit policy."},
 ];

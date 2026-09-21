@@ -1,0 +1,67 @@
+{
+  "modelVersion": "2.0.0",
+  "generatedAt": "2026-09-21T09:30:36.737960+00:00",
+  "scope": "Upcoming expectations on or after the model training date",
+  "predictions": [
+    {
+      "cowId": "CWN973",
+      "expectedDate": "2026-09-21",
+      "lastMovementDate": "2026-03-08",
+      "currentLocation": "ACES Muzahmiya WH",
+      "currentRegion": "Central",
+      "predictedDaysToNextMove": 197,
+      "nextRegion": { "name": "Central", "probability": 0.4732 },
+      "nextLocationCategory": { "name": "Other", "probability": 0.3265 },
+      "regionAlternatives": [{ "name": "West", "probability": 0.2366 }, { "name": "South", "probability": 0.1717 }],
+      "categoryAlternatives": [{ "name": "Event", "probability": 0.2631 }, { "name": "Mega Project", "probability": 0.1869 }]
+    },
+    {
+      "cowId": "CWN915",
+      "expectedDate": "2026-09-24",
+      "lastMovementDate": "2026-04-03",
+      "currentLocation": "Hajj 1447 Muzdalifah",
+      "currentRegion": "West",
+      "predictedDaysToNextMove": 174,
+      "nextRegion": { "name": "West", "probability": 0.656 },
+      "nextLocationCategory": { "name": "Warehouse", "probability": 0.4453 },
+      "regionAlternatives": [{ "name": "South", "probability": 0.2189 }, { "name": "Central", "probability": 0.0627 }],
+      "categoryAlternatives": [{ "name": "Event", "probability": 0.2159 }, { "name": "Other", "probability": 0.2129 }]
+    },
+    {
+      "cowId": "COWE05",
+      "expectedDate": "2026-10-06",
+      "lastMovementDate": "2026-04-21",
+      "currentLocation": "الهيئة السعودية للمدن الصناعية ومناطق التقنية مدن (MODON)",
+      "currentRegion": "West",
+      "predictedDaysToNextMove": 168,
+      "nextRegion": { "name": "West", "probability": 0.6922 },
+      "nextLocationCategory": { "name": "Warehouse", "probability": 0.4813 },
+      "regionAlternatives": [{ "name": "South", "probability": 0.1284 }, { "name": "Central", "probability": 0.1269 }],
+      "categoryAlternatives": [{ "name": "Other", "probability": 0.2626 }, { "name": "Event", "probability": 0.1292 }]
+    },
+    {
+      "cowId": "CWH971",
+      "expectedDate": "2026-10-16",
+      "lastMovementDate": "2026-03-31",
+      "currentLocation": "ACES Muzahmiya WH",
+      "currentRegion": "Central",
+      "predictedDaysToNextMove": 199,
+      "nextRegion": { "name": "Central", "probability": 0.5094 },
+      "nextLocationCategory": { "name": "Other", "probability": 0.317 },
+      "regionAlternatives": [{ "name": "West", "probability": 0.1929 }, { "name": "South", "probability": 0.175 }],
+      "categoryAlternatives": [{ "name": "Event", "probability": 0.2681 }, { "name": "Mega Project", "probability": 0.1988 }]
+    },
+    {
+      "cowId": "CWN053",
+      "expectedDate": "2026-10-29",
+      "lastMovementDate": "2026-02-17",
+      "currentLocation": "Makkah Haram",
+      "currentRegion": "West",
+      "predictedDaysToNextMove": 254,
+      "nextRegion": { "name": "West", "probability": 0.6889 },
+      "nextLocationCategory": { "name": "Warehouse", "probability": 0.4203 },
+      "regionAlternatives": [{ "name": "South", "probability": 0.2434 }, { "name": "Central", "probability": 0.0392 }],
+      "categoryAlternatives": [{ "name": "Other", "probability": 0.2649 }, { "name": "Event", "probability": 0.1435 }]
+    }
+  ]
+}

@@ -1,20 +1,159 @@
+import { useEffect, useMemo, useState } from "react";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BrainCircuit, CheckCircle2, Clock3, Layers3, MapPinned, ShieldAlert, Target } from "lucide-react";
+import {
+  ArrowRight,
+  BrainCircuit,
+  CalendarDays,
+  CheckCircle2,
+  Clock3,
+  Layers3,
+  MapPin,
+  MapPinned,
+  Search,
+  ShieldAlert,
+  Target,
+  Truck,
+} from "lucide-react";
 
-const models=[
- {icon:MapPinned,name:"Next Region Classifier",purpose:"Ranks the most probable destination regions for each future COW movement.",primary:"80.4%",primaryLabel:"Top-1 accuracy",secondary:"95.2%",secondaryLabel:"Top-3 accuracy",status:"Production candidate"},
- {icon:Layers3,name:"Location Category Classifier",purpose:"Predicts the likely operational purpose: warehouse, event, royal, or other category.",primary:"49.1%",primaryLabel:"Top-1 accuracy",secondary:"90.6%",secondaryLabel:"Top-3 accuracy",status:"Decision support"},
- {icon:Clock3,name:"Movement Timing Regressor",purpose:"Estimates days until the next movement using asset history and operational context.",primary:"128 days",primaryLabel:"Mean absolute error",secondary:"0.023",secondaryLabel:"R² score",status:"Experimental"},
+type RankedPrediction = { name: string; probability: number };
+type MovementPrediction = {
+  cowId: string;
+  expectedDate: string;
+  lastMovementDate: string;
+  currentLocation: string;
+  currentRegion: string;
+  predictedDaysToNextMove: number;
+  nextRegion: RankedPrediction;
+  nextLocationCategory: RankedPrediction;
+  regionAlternatives: RankedPrediction[];
+  categoryAlternatives: RankedPrediction[];
+};
+
+type PredictionPayload = {
+  modelVersion: string;
+  generatedAt: string;
+  predictions: MovementPrediction[];
+};
+
+const models = [
+  { icon: MapPinned, name: "Next Region Classifier", primary: "80.4%", label: "Top-1 accuracy", status: "Production candidate" },
+  { icon: Layers3, name: "Location Category Classifier", primary: "49.1%", label: "Top-1 accuracy", status: "Decision support" },
+  { icon: Clock3, name: "Movement Timing Regressor", primary: "±128 days", label: "Mean absolute error", status: "Experimental" },
 ];
 
-export default function MovementPredictions(){return <div className="min-h-screen bg-[#f7f4f8]"><Navigation/><header className="border-b border-[#e6dce9] bg-white"><div className="mx-auto max-w-[1500px] px-5 py-7 lg:px-8"><div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-[#8c2ca8]">Predictive Models</p><h1 className="mt-2 flex items-center gap-3 text-3xl font-bold text-[#25102f]"><BrainCircuit className="h-8 w-8 text-[#8c2ca8]"/>Validated movement forecasting</h1><p className="mt-2 max-w-3xl text-sm text-slate-500">Transparent model performance based on chronological validation. Individual asset predictions remain in the protected operational data layer.</p></div><Badge className="w-fit bg-emerald-600 px-3 py-1">Model v2.0</Badge></div></div></header>
-<main className="mx-auto max-w-[1500px] space-y-6 px-5 py-7 lg:px-8">
- <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><Metric icon={<Target/>} label="Training sequences" value="1,554"/><Metric icon={<CheckCircle2/>} label="Validation sequences" value="693"/><Metric icon={<MapPinned/>} label="Historical movements" value="2,694"/><Metric icon={<Clock3/>} label="Training period" value="2021–2026"/></div>
- <div className="grid gap-5 lg:grid-cols-3">{models.map(({icon:Icon,...m})=><Card key={m.name} className="border-[#e6dce9] shadow-sm"><CardHeader><div className="mb-5 flex items-start justify-between"><span className="rounded-xl bg-[#8c2ca8]/10 p-3 text-[#8c2ca8]"><Icon/></span><Badge variant="outline" className={m.status==="Experimental"?"border-amber-300 text-amber-700":"border-emerald-300 text-emerald-700"}>{m.status}</Badge></div><CardTitle className="text-xl text-[#25102f]">{m.name}</CardTitle><p className="pt-2 text-sm leading-6 text-slate-500">{m.purpose}</p></CardHeader><CardContent><div className="grid grid-cols-2 gap-3"><ModelMetric value={m.primary} label={m.primaryLabel}/><ModelMetric value={m.secondary} label={m.secondaryLabel}/></div></CardContent></Card>)}</div>
- <div className="grid gap-6 xl:grid-cols-[1.3fr_.7fr]"><Card className="border-[#e6dce9] shadow-sm"><CardHeader><CardTitle className="text-xl text-[#25102f]">Validation methodology</CardTitle></CardHeader><CardContent className="space-y-4 text-sm text-slate-600"><Step n="01" title="Chronological split" text="Models train on movements before 1 January 2025 and validate against later movement outcomes."/><Step n="02" title="Leakage prevention" text="Future movement fields are excluded from the feature set available at prediction time."/><Step n="03" title="Operational interpretation" text="Top-3 probabilities support planners; timing estimates are clearly marked experimental."/></CardContent></Card><Card className="border-amber-200 bg-amber-50/70 shadow-sm"><CardHeader><CardTitle className="flex items-center gap-2 text-lg text-amber-900"><ShieldAlert className="h-5 w-5"/>Responsible use</CardTitle></CardHeader><CardContent className="text-sm leading-6 text-amber-900/70">Predictions support—not replace—operational judgment. Planners should combine model outputs with event schedules, site readiness, access restrictions, fleet condition, and STC approval requirements.</CardContent></Card></div>
-</main></div>}
-function Metric({icon,label,value}:{icon:React.ReactNode;label:string;value:string}){return <Card className="border-[#e6dce9] shadow-sm"><CardContent className="flex items-center gap-4 pt-6"><span className="rounded-xl bg-[#8c2ca8]/10 p-3 text-[#8c2ca8]">{icon}</span><div><p className="text-xs uppercase tracking-wide text-slate-400">{label}</p><p className="mt-1 text-2xl font-bold text-[#25102f]">{value}</p></div></CardContent></Card>}
-function ModelMetric({value,label}:{value:string;label:string}){return <div className="rounded-xl bg-[#f7f4f8] p-4"><p className="text-2xl font-bold text-[#8c2ca8]">{value}</p><p className="mt-1 text-xs text-slate-500">{label}</p></div>}
-function Step({n,title,text}:{n:string;title:string;text:string}){return <div className="flex gap-4 rounded-xl border border-[#eee7f0] p-4"><span className="font-bold text-[#ff375e]">{n}</span><div><p className="font-semibold text-[#25102f]">{title}</p><p className="mt-1 leading-6">{text}</p></div></div>}
+export default function MovementPredictions() {
+  const [payload, setPayload] = useState<PredictionPayload | null>(null);
+  const [query, setQuery] = useState("");
+  const [region, setRegion] = useState("All regions");
+
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}movement-predictions.json`)
+      .then((response) => {
+        if (!response.ok) throw new Error("Prediction data is unavailable");
+        return response.json();
+      })
+      .then(setPayload)
+      .catch(() => setPayload({ modelVersion: "2.0.0", generatedAt: "", predictions: [] }));
+  }, []);
+
+  const predictions = useMemo(() => {
+    const normalized = query.trim().toLowerCase();
+    return (payload?.predictions ?? [])
+      .filter((item) => region === "All regions" || item.nextRegion.name === region)
+      .filter((item) => !normalized || item.cowId.toLowerCase().includes(normalized) || item.currentLocation.toLowerCase().includes(normalized))
+      .sort((a, b) => a.expectedDate.localeCompare(b.expectedDate));
+  }, [payload, query, region]);
+
+  return (
+    <div className="min-h-screen bg-[#f7f4f8]">
+      <Navigation />
+      <header className="border-b border-[#e6dce9] bg-white">
+        <div className="mx-auto max-w-[1500px] px-5 py-7 lg:px-8">
+          <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[.2em] text-[#8c2ca8]">Predictive Models</p>
+              <h1 className="mt-2 flex items-center gap-3 text-3xl font-bold text-[#25102f]">
+                <BrainCircuit className="h-8 w-8 text-[#8c2ca8]" /> Next movement expectations
+              </h1>
+              <p className="mt-2 max-w-3xl text-sm text-slate-500">
+                Asset-level expectations generated from historical movement sequences. Dates and destinations are probabilistic planning signals, not confirmed work orders.
+              </p>
+            </div>
+            <Badge className="w-fit bg-emerald-600 px-3 py-1">Model v{payload?.modelVersion ?? "2.0"}</Badge>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-[1500px] space-y-7 px-5 py-7 lg:px-8">
+        <section className="rounded-2xl bg-[#25102f] p-5 text-white shadow-xl md:p-7">
+          <div className="flex flex-col justify-between gap-5 xl:flex-row xl:items-end">
+            <div>
+              <div className="flex items-center gap-2 text-[#d8b4e2]"><Truck className="h-5 w-5" /><span className="text-xs font-bold uppercase tracking-[.18em]">Upcoming movement queue</span></div>
+              <h2 className="mt-3 text-2xl font-bold">What is expected to move next?</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-white/60">Forecasts are ordered by expected date. Timing carries a ±128-day mean absolute error and should be checked against event and fleet plans.</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <label className="relative block">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
+                <input aria-label="Search COW ID or location" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search COW ID or location" className="h-11 w-full rounded-xl border border-white/15 bg-white/10 pl-10 pr-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[#d8b4e2] sm:w-64" />
+              </label>
+              <select aria-label="Filter predicted region" value={region} onChange={(event) => setRegion(event.target.value)} className="h-11 rounded-xl border border-white/15 bg-[#351641] px-4 text-sm text-white outline-none focus:border-[#d8b4e2]">
+                <option>All regions</option><option>Central</option><option>West</option><option>East</option><option>South</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <div className="mb-4 flex items-center justify-between">
+            <div><h2 className="text-xl font-bold text-[#25102f]">Predicted next movements</h2><p className="mt-1 text-sm text-slate-500">{predictions.length} upcoming assets match the current view</p></div>
+            <Badge variant="outline" className="border-[#8c2ca8]/30 text-[#8c2ca8]">Updated from historical model</Badge>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+            {predictions.map((prediction, index) => <PredictionCard key={prediction.cowId} prediction={prediction} priority={index + 1} />)}
+            {payload && predictions.length === 0 && <Card className="border-dashed border-[#d8c9dc] bg-white lg:col-span-2 xl:col-span-3"><CardContent className="py-14 text-center text-sm text-slate-500">No upcoming movement expectations match this filter.</CardContent></Card>}
+          </div>
+        </section>
+
+        <section className="grid gap-5 lg:grid-cols-3">
+          {models.map(({ icon: Icon, ...model }) => (
+            <Card key={model.name} className="border-[#e6dce9] shadow-sm"><CardContent className="flex items-center gap-4 pt-6"><span className="rounded-xl bg-[#8c2ca8]/10 p-3 text-[#8c2ca8]"><Icon /></span><div className="min-w-0 flex-1"><p className="font-semibold text-[#25102f]">{model.name}</p><p className="mt-1 text-xs text-slate-500">{model.status}</p></div><div className="text-right"><p className="text-xl font-bold text-[#8c2ca8]">{model.primary}</p><p className="text-[10px] text-slate-400">{model.label}</p></div></CardContent></Card>
+          ))}
+        </section>
+
+        <section className="grid gap-6 xl:grid-cols-[1.3fr_.7fr]">
+          <Card className="border-[#e6dce9] shadow-sm"><CardHeader><CardTitle className="text-xl text-[#25102f]">How to read each expectation</CardTitle></CardHeader><CardContent className="grid gap-4 md:grid-cols-3"><Step icon={<CalendarDays />} title="Expected date" text="Last recorded movement plus the timing model estimate." /><Step icon={<MapPinned />} title="Region forecast" text="Highest-ranked destination region and its probability." /><Step icon={<Target />} title="Movement purpose" text="Likely location category, such as event or warehouse." /></CardContent></Card>
+          <Card className="border-amber-200 bg-amber-50/70 shadow-sm"><CardHeader><CardTitle className="flex items-center gap-2 text-lg text-amber-900"><ShieldAlert className="h-5 w-5" /> Responsible use</CardTitle></CardHeader><CardContent className="text-sm leading-6 text-amber-900/70">Predictions support—not replace—operational judgment. Confirm event schedules, site readiness, access, fleet condition, and STC approvals before dispatch.</CardContent></Card>
+        </section>
+      </main>
+    </div>
+  );
+}
+
+function PredictionCard({ prediction, priority }: { prediction: MovementPrediction; priority: number }) {
+  const date = new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(new Date(`${prediction.expectedDate}T00:00:00`));
+  return <Card className="overflow-hidden border-[#e6dce9] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+    <div className="h-1 bg-gradient-to-r from-[#ff375e] via-[#8c2ca8] to-[#4f008c]" />
+    <CardHeader className="pb-4"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-[#8c2ca8]">Priority {String(priority).padStart(2, "0")}</p><CardTitle className="mt-2 text-2xl text-[#25102f]">{prediction.cowId}</CardTitle></div><div className="rounded-xl bg-[#f5eff7] px-3 py-2 text-right"><p className="text-[10px] uppercase tracking-wide text-slate-400">Expected date</p><p className="mt-1 text-sm font-bold text-[#25102f]">{date}</p></div></div></CardHeader>
+    <CardContent className="space-y-5">
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-xl bg-[#faf8fb] p-4"><Location label="Current" value={prediction.currentRegion} detail={prediction.currentLocation} /><ArrowRight className="h-5 w-5 text-[#ff375e]" /><Location label="Expected" value={prediction.nextRegion.name} detail={prediction.nextLocationCategory.name} align="right" /></div>
+      <div className="grid grid-cols-2 gap-3"><Confidence label="Region confidence" value={prediction.nextRegion.probability} /><Confidence label="Category confidence" value={prediction.nextLocationCategory.probability} /></div>
+      <div className="flex items-center justify-between border-t border-[#eee7f0] pt-4 text-xs text-slate-500"><span>Last moved {prediction.lastMovementDate}</span><span className="font-semibold text-[#8c2ca8]">{prediction.predictedDaysToNextMove} days estimated</span></div>
+    </CardContent>
+  </Card>;
+}
+
+function Location({ label, value, detail, align = "left" }: { label: string; value: string; detail: string; align?: "left" | "right" }) {
+  return <div className={align === "right" ? "text-right" : "text-left"}><p className="text-[10px] font-bold uppercase tracking-wide text-slate-400">{label}</p><p className="mt-1 flex items-center gap-1.5 text-sm font-bold text-[#25102f]" style={{ justifyContent: align === "right" ? "flex-end" : "flex-start" }}><MapPin className="h-3.5 w-3.5 text-[#8c2ca8]" />{value}</p><p className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500" title={detail}>{detail}</p></div>;
+}
+
+function Confidence({ label, value }: { label: string; value: number }) {
+  const percentage = Math.round(value * 100);
+  return <div className="rounded-xl border border-[#eee7f0] p-3"><div className="flex items-center justify-between"><span className="text-[11px] text-slate-500">{label}</span><span className="text-sm font-bold text-[#8c2ca8]">{percentage}%</span></div><div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#eee7f0]"><div className="h-full rounded-full bg-[#8c2ca8]" style={{ width: `${percentage}%` }} /></div></div>;
+}
+
+function Step({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
+  return <div className="rounded-xl border border-[#eee7f0] p-4"><span className="text-[#ff375e]">{icon}</span><p className="mt-3 font-semibold text-[#25102f]">{title}</p><p className="mt-1 text-sm leading-6 text-slate-500">{text}</p></div>;
+}

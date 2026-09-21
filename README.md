@@ -20,7 +20,7 @@ Before connecting sensitive or live STC data, replace the demonstration gate wit
 
 ## Public-data policy
 
-This repository deliberately excludes raw history, COW identifiers, coordinates, routes, and record-level forecasts. The deployed dashboard reads only `public/movement-insights.json`, a sanitized aggregate artifact.
+This repository excludes raw history, coordinates, routes, and the complete record-level forecast set. The deployed dashboard reads sanitized aggregates from `public/movement-insights.json` plus a deliberately limited set of five upcoming asset expectations in `public/movement-predictions.json`.
 
 Historical source records should remain in an approved private data store. Model training should run in a controlled environment, with only reviewed aggregate metrics promoted to this demonstration.
 
