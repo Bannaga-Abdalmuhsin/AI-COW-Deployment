@@ -61,16 +61,27 @@ export default function OperationsAgent() {
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState<AgentAnswer[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([
-      fetch(`${import.meta.env.BASE_URL}operations-knowledge.json`).then((response) => response.json()),
-      fetch(`${import.meta.env.BASE_URL}movement-predictions.json`).then((response) => response.json()),
-    ]).then(([data, predictionData]: [KnowledgePayload, PredictionPayload]) => {
-      setKnowledge(data);
-      setPredictions(predictionData.predictions ?? []);
-      setLoading(false);
-    }).catch(() => setLoading(false));
+      fetch(`${import.meta.env.BASE_URL}operations-knowledge.json`),
+      fetch(`${import.meta.env.BASE_URL}movement-predictions.json`),
+    ])
+      .then(async ([knowledgeResponse, predictionResponse]) => {
+        if (!knowledgeResponse.ok || !predictionResponse.ok) throw new Error("Agent data is unavailable");
+        const [data, predictionData] = await Promise.all([
+          knowledgeResponse.json() as Promise<KnowledgePayload>,
+          predictionResponse.json() as Promise<PredictionPayload>,
+        ]);
+        setKnowledge(data);
+        setPredictions(predictionData.predictions ?? []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoadError("The movement knowledge base could not be loaded. Refresh and try again.");
+        setLoading(false);
+      });
   }, []);
 
   const indexedRecords = useMemo(() => (knowledge?.records ?? []).map((record) => ({
@@ -98,8 +109,8 @@ export default function OperationsAgent() {
 
     <main className="mx-auto grid max-w-[1500px] gap-6 px-5 py-7 lg:grid-cols-[320px_minmax(0,1fr)] lg:px-8">
       <aside className="space-y-5">
-        <Card className="border-[#e6dce9] shadow-sm"><CardContent className="pt-6"><div className="flex items-center gap-3"><span className="rounded-xl bg-[#8c2ca8]/10 p-2.5 text-[#8c2ca8]"><Database className="h-5 w-5" /></span><div><p className="font-semibold text-[#25102f]">Knowledge coverage</p><p className="text-xs text-slate-500">Complete movement workbook</p></div></div><div className="mt-5 space-y-3 text-sm"><Coverage label="Movement records" value={knowledge?.recordCount.toLocaleString() ?? "Loading"} /><Coverage label="Available fields" value={knowledge?.fieldCount.toString() ?? "—"} /><Coverage label="ML expectations" value={predictions.length.toString()} /></div></CardContent></Card>
-        <Card className="border-[#e6dce9] shadow-sm"><CardContent className="pt-6"><p className="mb-3 text-xs font-bold uppercase tracking-[.14em] text-slate-400">Suggested questions</p><div className="space-y-2">{suggestions.map((suggestion) => <button key={suggestion} onClick={() => ask(suggestion)} disabled={loading} className="w-full rounded-xl border border-[#eee7f0] bg-white p-3 text-left text-xs leading-5 text-slate-600 transition hover:border-[#8c2ca8]/40 hover:bg-[#faf7fb] hover:text-[#25102f]">{suggestion}</button>)}</div></CardContent></Card>
+        <Card className="border-[#e6dce9] shadow-sm"><CardContent className="pt-6"><div className="flex items-center gap-3"><span className="rounded-xl bg-[#8c2ca8]/10 p-2.5 text-[#8c2ca8]"><Database className="h-5 w-5" /></span><div><p className="font-semibold text-[#25102f]">Knowledge coverage</p><p className="text-xs text-slate-500">Complete movement workbook</p></div></div><div className="mt-5 space-y-3 text-sm"><Coverage label="Movement records" value={knowledge?.recordCount.toLocaleString() ?? (loadError ? "Unavailable" : "Loading")} /><Coverage label="Available fields" value={knowledge?.fieldCount.toString() ?? "—"} /><Coverage label="ML expectations" value={predictions.length.toString()} /></div></CardContent></Card>
+        <Card className="border-[#e6dce9] shadow-sm"><CardContent className="pt-6"><p className="mb-3 text-xs font-bold uppercase tracking-[.14em] text-slate-400">Suggested questions</p><div className="space-y-2">{suggestions.map((suggestion) => <button key={suggestion} onClick={() => ask(suggestion)} disabled={loading || !!loadError} className="w-full rounded-xl border border-[#eee7f0] bg-white p-3 text-left text-xs leading-5 text-slate-600 transition hover:border-[#8c2ca8]/40 hover:bg-[#faf7fb] hover:text-[#25102f]">{suggestion}</button>)}</div></CardContent></Card>
       </aside>
 
       <section className="flex min-h-[680px] flex-col overflow-hidden rounded-2xl border border-[#e6dce9] bg-white shadow-sm">
@@ -108,7 +119,7 @@ export default function OperationsAgent() {
           {answers.length === 0 && <div className="mx-auto flex max-w-xl flex-col items-center py-20 text-center"><span className="rounded-2xl bg-[#8c2ca8]/10 p-4 text-[#8c2ca8]"><MessageSquareText className="h-8 w-8" /></span><h2 className="mt-5 text-xl font-bold text-[#25102f]">What would you like to know?</h2><p className="mt-2 text-sm leading-6 text-slate-500">Try a COW ID, event name, destination site, region, vendor, year, or ask for the next predicted movement.</p></div>}
           {answers.map((item, index) => <Answer key={`${item.question}-${index}`} item={item} />)}
         </div>
-        <form onSubmit={submit} className="border-t border-[#eee7f0] bg-white p-4 md:p-5"><div className="flex gap-3"><div className="relative flex-1"><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={question} onChange={(event) => setQuestion(event.target.value)} disabled={loading} placeholder={loading ? "Loading the movement knowledge base…" : "Ask about a COW, event, site, date, region, vendor, or prediction…"} className="h-12 w-full rounded-xl border border-[#dcd1df] bg-[#faf8fb] pl-11 pr-4 text-sm outline-none transition focus:border-[#8c2ca8] focus:ring-2 focus:ring-[#8c2ca8]/10" /></div><Button type="submit" disabled={loading || !question.trim()} className="h-12 bg-[#8c2ca8] px-5 text-white hover:bg-[#6f1f86]"><Send className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Ask agent</span></Button></div><p className="mt-2 text-[10px] text-slate-400">Verify operational decisions against the evidence rows and current field instructions.</p></form>
+        <form onSubmit={submit} className="border-t border-[#eee7f0] bg-white p-4 md:p-5"><div className="flex gap-3"><div className="relative flex-1"><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={question} onChange={(event) => setQuestion(event.target.value)} disabled={loading || !!loadError} placeholder={loading ? "Loading the movement knowledge base…" : loadError ? "Movement knowledge base unavailable." : "Ask about a COW, event, site, date, region, vendor, or prediction…"} className="h-12 w-full rounded-xl border border-[#dcd1df] bg-[#faf8fb] pl-11 pr-4 text-sm outline-none transition focus:border-[#8c2ca8] focus:ring-2 focus:ring-[#8c2ca8]/10" /></div><Button type="submit" disabled={loading || !!loadError || !question.trim()} className="h-12 bg-[#8c2ca8] px-5 text-white hover:bg-[#6f1f86]"><Send className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Ask agent</span></Button></div>{loadError && <p role="alert" className="mt-2 text-xs text-red-600">{loadError}</p>}<p className="mt-2 text-[10px] text-slate-400">Verify operational decisions against the evidence rows and current field instructions.</p></form>
       </section>
     </main>
   </div>;
