@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the public operations knowledge index from the source movement workbook."""
+"""Build chunked public operations knowledge files from the source workbook."""
 
 from __future__ import annotations
 
@@ -40,9 +40,9 @@ def clean(value):
 
 def main() -> None:
     if len(sys.argv) != 3:
-        raise SystemExit("Usage: build_operations_knowledge.py INPUT.xlsx OUTPUT.json")
+        raise SystemExit("Usage: build_operations_knowledge.py INPUT.xlsx OUTPUT_DIR")
     source = Path(sys.argv[1])
-    output = Path(sys.argv[2])
+    output_dir = Path(sys.argv[2])
     workbook = load_workbook(source, read_only=True, data_only=True)
     sheet = workbook[workbook.sheetnames[0]]
     records = []
@@ -50,17 +50,30 @@ def main() -> None:
         record = {key: clean(value) for key, value in zip(FIELDS, row)}
         if any(value is not None for value in record.values()):
             records.append(record)
-    payload = {
+    output_dir.mkdir(parents=True, exist_ok=True)
+    chunk_size = 400
+    chunks = []
+    for index, start in enumerate(range(0, len(records), chunk_size), start=1):
+        filename = f"records-{index:02d}.json"
+        chunk = records[start:start + chunk_size]
+        (output_dir / filename).write_text(
+            json.dumps({"records": chunk}, ensure_ascii=False, separators=(",", ":")),
+            encoding="utf-8",
+        )
+        chunks.append({"file": filename, "records": len(chunk)})
+    manifest = {
         "source": source.name,
         "sheet": sheet.title,
         "recordCount": len(records),
         "fieldCount": len(FIELDS),
         "fields": FIELDS,
-        "records": records,
+        "chunks": chunks,
     }
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    print(f"Wrote {len(records):,} records to {output}")
+    (output_dir / "index.json").write_text(
+        json.dumps(manifest, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    print(f"Wrote {len(records):,} records across {len(chunks)} chunks to {output_dir}")
 
 
 if __name__ == "__main__":

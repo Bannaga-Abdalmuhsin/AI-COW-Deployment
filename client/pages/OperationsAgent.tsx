@@ -38,6 +38,7 @@ type MovementRecord = {
 };
 
 type KnowledgePayload = { source: string; recordCount: number; fieldCount: number; records: MovementRecord[] };
+type KnowledgeManifest = { source: string; recordCount: number; fieldCount: number; chunks: { file: string; records: number }[] };
 type RankedPrediction = { name: string; probability: number };
 type Prediction = { cowId: string; expectedDate: string; currentLocation: string; currentRegion: string; nextRegion: RankedPrediction; nextLocationCategory: RankedPrediction };
 type PredictionPayload = { predictions: Prediction[] };
@@ -61,17 +62,39 @@ export default function OperationsAgent() {
   const [question, setQuestion] = useState("");
   const [answers, setAnswers] = useState<AgentAnswer[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [loadAttempt, setLoadAttempt] = useState(0);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${import.meta.env.BASE_URL}operations-knowledge.json`).then((response) => response.json()),
-      fetch(`${import.meta.env.BASE_URL}movement-predictions.json`).then((response) => response.json()),
-    ]).then(([data, predictionData]: [KnowledgePayload, PredictionPayload]) => {
+    setLoading(true);
+    setLoadError("");
+    const loadKnowledge = fetch(`${import.meta.env.BASE_URL}operations-knowledge/index.json`)
+      .then((response) => {
+        if (!response.ok) throw new Error("Knowledge manifest is unavailable");
+        return response.json() as Promise<KnowledgeManifest>;
+      })
+      .then(async (manifest) => {
+        const chunks = await Promise.all(manifest.chunks.map(async (chunk) => {
+          const response = await fetch(`${import.meta.env.BASE_URL}operations-knowledge/${chunk.file}`);
+          if (!response.ok) throw new Error(`Knowledge chunk ${chunk.file} is unavailable`);
+          return response.json() as Promise<{ records: MovementRecord[] }>;
+        }));
+        const records = chunks.flatMap((chunk) => chunk.records);
+        if (records.length !== manifest.recordCount) throw new Error("Knowledge record count does not match the workbook manifest");
+        return { ...manifest, records };
+      });
+    const loadPredictions = fetch(`${import.meta.env.BASE_URL}movement-predictions.json`)
+      .then((response) => response.ok ? response.json() as Promise<PredictionPayload> : { predictions: [] })
+      .catch(() => ({ predictions: [] }));
+    Promise.all([loadKnowledge, loadPredictions]).then(([data, predictionData]) => {
       setKnowledge(data);
       setPredictions(predictionData.predictions ?? []);
       setLoading(false);
-    }).catch(() => setLoading(false));
-  }, []);
+    }).catch((error: Error) => {
+      setLoadError(error.message || "The movement knowledge base could not be loaded.");
+      setLoading(false);
+    });
+  }, [loadAttempt]);
 
   const indexedRecords = useMemo(() => (knowledge?.records ?? []).map((record) => ({
     record,
@@ -105,10 +128,11 @@ export default function OperationsAgent() {
       <section className="flex min-h-[680px] flex-col overflow-hidden rounded-2xl border border-[#e6dce9] bg-white shadow-sm">
         <div className="flex items-center justify-between border-b border-[#eee7f0] px-5 py-4"><div className="flex items-center gap-3"><span className="relative rounded-xl bg-[#25102f] p-2 text-white"><Sparkles className="h-5 w-5" /><span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-400" /></span><div><p className="font-semibold text-[#25102f]">COW Intelligence Assistant</p><p className="text-xs text-slate-500">Grounded retrieval · no invented records</p></div></div><Badge variant="outline" className="hidden border-[#d8c9dc] text-[#8c2ca8] sm:inline-flex">Excel source</Badge></div>
         <div className="flex-1 space-y-5 overflow-y-auto bg-[#fcfbfc] p-5 md:p-7">
-          {answers.length === 0 && <div className="mx-auto flex max-w-xl flex-col items-center py-20 text-center"><span className="rounded-2xl bg-[#8c2ca8]/10 p-4 text-[#8c2ca8]"><MessageSquareText className="h-8 w-8" /></span><h2 className="mt-5 text-xl font-bold text-[#25102f]">What would you like to know?</h2><p className="mt-2 text-sm leading-6 text-slate-500">Try a COW ID, event name, destination site, region, vendor, year, or ask for the next predicted movement.</p></div>}
+          {loadError && <div className="mx-auto flex max-w-xl flex-col items-center rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center"><Database className="h-8 w-8 text-red-600" /><h2 className="mt-4 text-lg font-bold text-red-900">Knowledge base unavailable</h2><p className="mt-2 text-sm leading-6 text-red-800/70">{loadError}</p><Button onClick={() => setLoadAttempt((value) => value + 1)} className="mt-5 bg-red-700 text-white hover:bg-red-800">Retry loading</Button></div>}
+          {!loadError && answers.length === 0 && <div className="mx-auto flex max-w-xl flex-col items-center py-20 text-center"><span className="rounded-2xl bg-[#8c2ca8]/10 p-4 text-[#8c2ca8]"><MessageSquareText className="h-8 w-8" /></span><h2 className="mt-5 text-xl font-bold text-[#25102f]">{loading ? "Loading the movement knowledge base…" : "What would you like to know?"}</h2><p className="mt-2 text-sm leading-6 text-slate-500">{loading ? "Loading eight verified workbook segments." : "Try a COW ID, event name, destination site, region, vendor, year, or ask for the next predicted movement."}</p></div>}
           {answers.map((item, index) => <Answer key={`${item.question}-${index}`} item={item} />)}
         </div>
-        <form onSubmit={submit} className="border-t border-[#eee7f0] bg-white p-4 md:p-5"><div className="flex gap-3"><div className="relative flex-1"><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={question} onChange={(event) => setQuestion(event.target.value)} disabled={loading} placeholder={loading ? "Loading the movement knowledge base…" : "Ask about a COW, event, site, date, region, vendor, or prediction…"} className="h-12 w-full rounded-xl border border-[#dcd1df] bg-[#faf8fb] pl-11 pr-4 text-sm outline-none transition focus:border-[#8c2ca8] focus:ring-2 focus:ring-[#8c2ca8]/10" /></div><Button type="submit" disabled={loading || !question.trim()} className="h-12 bg-[#8c2ca8] px-5 text-white hover:bg-[#6f1f86]"><Send className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Ask agent</span></Button></div><p className="mt-2 text-[10px] text-slate-400">Verify operational decisions against the evidence rows and current field instructions.</p></form>
+        <form onSubmit={submit} className="border-t border-[#eee7f0] bg-white p-4 md:p-5"><div className="flex gap-3"><div className="relative flex-1"><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={question} onChange={(event) => setQuestion(event.target.value)} disabled={loading || Boolean(loadError)} placeholder={loadError ? "Knowledge base unavailable — use Retry loading" : loading ? "Loading the movement knowledge base…" : "Ask about a COW, event, site, date, region, vendor, or prediction…"} className="h-12 w-full rounded-xl border border-[#dcd1df] bg-[#faf8fb] pl-11 pr-4 text-sm outline-none transition focus:border-[#8c2ca8] focus:ring-2 focus:ring-[#8c2ca8]/10" /></div><Button type="submit" disabled={loading || Boolean(loadError) || !question.trim()} className="h-12 bg-[#8c2ca8] px-5 text-white hover:bg-[#6f1f86]"><Send className="mr-2 h-4 w-4" /><span className="hidden sm:inline">Ask agent</span></Button></div><p className="mt-2 text-[10px] text-slate-400">Verify operational decisions against the evidence rows and current field instructions.</p></form>
       </section>
     </main>
   </div>;
@@ -131,7 +155,7 @@ function answerQuestion(question: string, indexed: { record: MovementRecord; sea
   let candidates = indexed.filter(({ record }) => {
     if (cow && record.cowId?.toLowerCase() !== cow.toLowerCase()) return false;
     if (year && !record.movedAt?.startsWith(year)) return false;
-    if (region && ![record.regionFrom, record.regionTo, record.administrativeRegion].some((value) => value?.toLowerCase().includes(region))) return false;
+    if (region && !matchesRegion(record, region)) return false;
     if (vendor && record.vendor?.toLowerCase() !== vendor) return false;
     return true;
   });
@@ -158,6 +182,16 @@ function answerQuestion(question: string, indexed: { record: MovementRecord; sea
 }
 
 function toEvidence(record: MovementRecord): Evidence { return { recordNo: record.recordNo, cowId: record.cowId, movedAt: record.movedAt, fromLocation: record.fromLocation, toLocation: record.toLocation, eventName: record.eventName, regionTo: record.regionTo, vendor: record.vendor, statusRemarks: record.statusRemarks }; }
+function matchesRegion(record: MovementRecord, region: string) {
+  const aliases: Record<string, string[]> = {
+    central: ["central", "cr", "riyadh", "qassim"],
+    west: ["west", "wr", "makkah", "madinah", "jeddah"],
+    east: ["east", "er", "eastern"],
+    south: ["south", "sr", "asir", "jazan", "najran", "baha"],
+  };
+  const values = [record.regionFrom, record.regionTo, record.administrativeRegion, record.cityDistrict].filter(Boolean).join(" ").toLowerCase().split(/\s+/);
+  return (aliases[region] ?? [region]).some((alias) => values.includes(alias) || values.some((value) => value.includes(alias)));
+}
 function topValues(values: (string | null)[]) { const counts = new Map<string, number>(); values.filter(Boolean).forEach((value) => counts.set(value!, (counts.get(value!) ?? 0) + 1)); return [...counts].sort((a, b) => b[1] - a[1])[0]?.[0] ?? ""; }
 function formatDate(value: string | null) { if (!value) return "an unknown date"; const date = new Date(value); return Number.isNaN(date.getTime()) ? value : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(date); }
 
