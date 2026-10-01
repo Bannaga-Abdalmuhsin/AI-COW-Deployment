@@ -62,7 +62,7 @@ export default function MovementPredictions() {
     const normalized = query.trim().toLowerCase();
     return (payload?.predictions ?? [])
       .filter((item) => region === "All regions" || item.nextRegion.name === region)
-      .filter((item) => !normalized || item.cowId.toLowerCase().includes(normalized) || item.currentLocation.toLowerCase().includes(normalized))
+      .filter((item) => !normalized || item.currentLocation.toLowerCase().includes(normalized) || item.nextRegion.name.toLowerCase().includes(normalized) || item.nextLocationCategory.name.toLowerCase().includes(normalized))
       .sort((a, b) => a.expectedDate.localeCompare(b.expectedDate));
   }, [payload, query, region]);
 
@@ -78,7 +78,7 @@ export default function MovementPredictions() {
                 <BrainCircuit className="h-8 w-8 text-[#8c2ca8]" /> Next movement expectations
               </h1>
               <p className="mt-2 max-w-3xl text-sm text-slate-500">
-                Asset-level expectations generated from historical movement sequences. Dates and destinations are probabilistic planning signals, not confirmed work orders.
+                Movement expectations generated from historical patterns. The forecast indicates likely demand, date, region, and purpose; the dispatched COW is assigned by operations.
               </p>
             </div>
             <Badge className="w-fit bg-emerald-600 px-3 py-1">Model v{payload?.modelVersion ?? "2.0"}</Badge>
@@ -97,7 +97,7 @@ export default function MovementPredictions() {
             <div className="grid gap-3 sm:grid-cols-2">
               <label className="relative block">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
-                <input aria-label="Search COW ID or location" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search COW ID or location" className="h-11 w-full rounded-xl border border-white/15 bg-white/10 pl-10 pr-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[#d8b4e2] sm:w-64" />
+                <input aria-label="Search location, region, or category" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search location, region, or category" className="h-11 w-full rounded-xl border border-white/15 bg-white/10 pl-10 pr-4 text-sm text-white outline-none placeholder:text-white/35 focus:border-[#d8b4e2] sm:w-64" />
               </label>
               <select aria-label="Filter predicted region" value={region} onChange={(event) => setRegion(event.target.value)} className="h-11 rounded-xl border border-white/15 bg-[#351641] px-4 text-sm text-white outline-none focus:border-[#d8b4e2]">
                 <option>All regions</option><option>Central</option><option>West</option><option>East</option><option>South</option>
@@ -108,7 +108,7 @@ export default function MovementPredictions() {
 
         <section>
           <div className="mb-4 flex items-center justify-between">
-            <div><h2 className="text-xl font-bold text-[#25102f]">Predicted next movements</h2><p className="mt-1 text-sm text-slate-500">{predictions.length} upcoming assets match the current view</p></div>
+            <div><h2 className="text-xl font-bold text-[#25102f]">Predicted next movements</h2><p className="mt-1 text-sm text-slate-500">{predictions.length} upcoming movement signals match the current view</p></div>
             <Badge variant="outline" className="border-[#8c2ca8]/30 text-[#8c2ca8]">Updated from historical model</Badge>
           </div>
           <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
@@ -144,7 +144,7 @@ function PredictionCard({ prediction, priority }: { prediction: MovementPredicti
   const planningWindow = `${shortDate.format(windowStart)} – ${fullDate.format(windowEnd)}`;
   return <Card className="overflow-hidden border-[#e6dce9] bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
     <div className="h-1 bg-gradient-to-r from-[#ff375e] via-[#8c2ca8] to-[#4f008c]" />
-    <CardHeader className="pb-4"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-[#8c2ca8]">Priority {String(priority).padStart(2, "0")}</p><CardTitle className="mt-2 text-2xl text-[#25102f]">{prediction.cowId}</CardTitle></div><div className="rounded-xl bg-[#f5eff7] px-3 py-2 text-right"><p className="text-[10px] uppercase tracking-wide text-slate-400">Expected date</p><p className="mt-1 text-sm font-bold text-[#25102f]">{date}</p><p className="mt-1 text-[10px] font-semibold text-[#8c2ca8]">±20 days: {planningWindow}</p></div></div></CardHeader>
+    <CardHeader className="pb-4"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[.16em] text-[#8c2ca8]">Priority {String(priority).padStart(2, "0")}</p><CardTitle className="mt-2 text-2xl text-[#25102f]">COW</CardTitle><p className="mt-1 text-xs text-slate-400">Asset assigned by operations</p></div><div className="rounded-xl bg-[#f5eff7] px-3 py-2 text-right"><p className="text-[10px] uppercase tracking-wide text-slate-400">Expected date</p><p className="mt-1 text-sm font-bold text-[#25102f]">{date}</p><p className="mt-1 text-[10px] font-semibold text-[#8c2ca8]">±20 days: {planningWindow}</p></div></div></CardHeader>
     <CardContent className="space-y-5">
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-xl bg-[#faf8fb] p-4"><Location label="Current" value={prediction.currentRegion} detail={prediction.currentLocation} /><ArrowRight className="h-5 w-5 text-[#ff375e]" /><Location label="Expected" value={prediction.nextRegion.name} detail={prediction.nextLocationCategory.name} align="right" /></div>
       <div className="grid grid-cols-2 gap-3"><Confidence label="Region confidence" value={prediction.nextRegion.probability} /><Confidence label="Category confidence" value={prediction.nextLocationCategory.probability} /></div>
