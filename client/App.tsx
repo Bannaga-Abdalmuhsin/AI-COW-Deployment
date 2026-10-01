@@ -8,7 +8,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import DataManagement from "./pages/DataManagement";
 import Login from "./pages/Login";
 import MovementPredictions from "./pages/MovementPredictions";
 import OperationsAgent from "./pages/OperationsAgent";
@@ -30,7 +29,6 @@ const App = () => (
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/data" element={<DataManagement />} />
               <Route path="/movement-predictions" element={<MovementPredictions />} />
               <Route path="/agent" element={<OperationsAgent />} />
             </Route>

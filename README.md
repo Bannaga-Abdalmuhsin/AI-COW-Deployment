@@ -17,7 +17,6 @@ Before connecting sensitive or live STC data, replace the demonstration gate wit
 - **Movement intelligence** — aggregate movement trends, regions, categories, and vendor footprint
 - **Predictive models** — validation results for next-region, movement-category, and timing models. Forecasts describe expected movement demand; operations assigns the final COW.
 - **AI operations agent** — grounded natural-language retrieval across the complete uploaded movement workbook
-- **Data governance** — privacy controls and the target production architecture
 
 ## Public-data policy
 
