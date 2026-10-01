@@ -15,13 +15,13 @@ Before connecting sensitive or live STC data, replace the demonstration gate wit
 
 - **Executive overview** — program scope, value proposition, and operating metrics
 - **Movement intelligence** — aggregate movement trends, regions, categories, and vendor footprint
-- **Predictive models** — validation results for next-region, movement-category, and timing models
+- **Predictive models** — validation results for next-region, movement-category, and timing models. Forecasts describe expected movement demand; operations assigns the final COW.
 - **AI operations agent** — grounded natural-language retrieval across the complete uploaded movement workbook
 - **Data governance** — privacy controls and the target production architecture
 
 ## Public-data policy
 
-This public demonstration includes the complete Excel-derived movement knowledge index in `public/operations-knowledge.json`, including operational record fields. It also includes sanitized aggregates and five upcoming model expectations. Do not use this deployment for confidential data.
+This public demonstration includes the complete Excel-derived movement knowledge index in the chunked `public/operations-knowledge/` directory, including operational record fields. It also includes sanitized aggregates and five upcoming model expectations. Do not use this deployment for confidential data.
 
 Historical source records should remain in an approved private data store. Model training should run in a controlled environment, with only reviewed aggregate metrics promoted to this demonstration.
 
